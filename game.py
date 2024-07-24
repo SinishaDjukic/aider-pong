@@ -9,9 +9,9 @@ class Game:
         self.screen = screen
         self.score1 = 0
         self.score2 = 0
-        self.paddle1 = Paddle(30, 450)
-        self.paddle2 = Paddle(1470, 450)
-        self.balls = [Ball(735, 595)]
+        self.paddle1 = Paddle(30, 250)
+        self.paddle2 = Paddle(760, 250)
+        self.balls = [Ball(395, 295)]
         self.powerup = PowerUp()
 
     def update(self):
