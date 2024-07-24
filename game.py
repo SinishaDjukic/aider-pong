@@ -59,8 +59,8 @@ class Game:
         # Get the dimensions of the background image
         bg_width, bg_height = self.background_image.get_size()
         
-        # Calculate the scaling factor to fit the image to the screen
-        scale_factor = min(screen_width / bg_width, screen_height / bg_height)
+        # Calculate the scaling factor to fill the screen with the image
+        scale_factor = max(screen_width / bg_width, screen_height / bg_height)
         
         # Calculate the new size of the background image
         new_bg_width = int(bg_width * scale_factor)
