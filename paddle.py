@@ -11,5 +11,5 @@ class Paddle:
         elif not up and self.rect.bottom < 600:
             self.rect.y += self.speed
 
-    def draw(self, screen):
-        pygame.draw.rect(screen, (255, 255, 255), self.rect)
+    def draw(self, screen, color=(255, 255, 255)):
+        pygame.draw.rect(screen, color, self.rect)

@@ -36,11 +36,13 @@ class Game:
 
     def draw(self):
         self.screen.fill((0, 0, 0))
-        self.paddle1.draw(self.screen)
-        self.paddle2.draw(self.screen)
+        self.paddle1.draw(self.screen, color=(137, 207, 240))  # Baby blue
+        self.paddle2.draw(self.screen, color=(0, 128, 0))  # Grass green
         self.ball.draw(self.screen)
         font = pygame.font.Font(None, 74)
         score_text1 = font.render(str(self.score1), 1, (255, 255, 255))
         score_text2 = font.render(str(self.score2), 1, (255, 255, 255))
+        score_text1 = font.render(str(self.score1), 1, (137, 207, 240))  # Baby blue
+        score_text2 = font.render(str(self.score2), 1, (0, 128, 0))  # Grass green
         self.screen.blit(score_text1, (250, 10))
         self.screen.blit(score_text2, (520, 10))
