@@ -16,7 +16,9 @@ class Paddle:
         shadow_rect = self.rect.copy()
         shadow_rect.x += shadow_offset[0]
         shadow_rect.y += shadow_offset[1]
-        pygame.draw.rect(screen, shadow_color, shadow_rect)
+        shadow_surface = pygame.Surface((self.rect.width, self.rect.height), pygame.SRCALPHA)
+        shadow_surface.fill((*shadow_color[:3], 128))  # 128 is 50% transparency
+        screen.blit(shadow_surface, shadow_rect.topleft)
         
         # Draw the paddle
         pygame.draw.rect(screen, base_color, self.rect)
