@@ -34,13 +34,17 @@ class Game:
                     self.score2 += 1
                 self.balls.remove(ball)
                 if not any(b.color == (255, 255, 255) for b in self.balls):
-                    self.balls.append(Ball(395, 295))
+                    new_ball = Ball(395, 295)
+                    new_ball.speed_x = random.choice([-4, 4])
+                    new_ball.speed_y = random.choice([-4, 4])
+                    self.balls.append(new_ball)
             ball.check_collision(self.paddle1, self.paddle2)
 
             if ball.rect.colliderect(self.powerup.rect):
-                self.balls.append(Ball(ball.rect.x, ball.rect.y))
-                self.balls[-1].speed_x = random.choice([-4, 4])
-                self.balls[-1].speed_y = random.choice([-4, 4])
+                new_ball = Ball(ball.rect.x, ball.rect.y)
+                new_ball.speed_x = ball.speed_x
+                new_ball.speed_y = random.choice([-4, 4])
+                self.balls.append(new_ball)
                 self.balls[-1].color = (255, 165, 0)  # Duck orange
                 self.powerup.move()
 
