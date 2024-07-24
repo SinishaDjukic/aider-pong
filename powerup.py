@@ -8,27 +8,9 @@ class PowerUp:
         self.image = pygame.image.load('powerup_icon.png')
         self.image = pygame.transform.scale(self.image, (40, 40))
         self.spawn_time = pygame.time.get_ticks()
-        self.animation_start_time = self.spawn_time
-        self.animation_start_time = self.spawn_time
-        self.animation_duration = 1000  # 1 second for the animation
 
     def draw(self, screen):
-        current_time = pygame.time.get_ticks()
-        elapsed_time = current_time - self.animation_start_time
-
-        if elapsed_time < self.animation_duration:
-            # Calculate the scale factor
-            scale_factor = 1 + 0.5 * (1 - (elapsed_time / self.animation_duration)) * abs(math.sin(elapsed_time / 1000))
-            scaled_size = int(40 * scale_factor)
-            scaled_image = pygame.transform.scale(self.image, (scaled_size, scaled_size))
-
-            # Calculate the shake offset
-            shake_offset = 5 * math.sin(elapsed_time / 50)
-
-            # Draw the scaled and shaken image
-            screen.blit(scaled_image, (self.rect.x + shake_offset - (scaled_size - 40) // 2, self.rect.y + shake_offset - (scaled_size - 40) // 2))
-        else:
-            screen.blit(self.image, self.rect)
+        screen.blit(self.image, self.rect)
 
     def move(self):
         self.rect.x = random.randint(100, 700)
