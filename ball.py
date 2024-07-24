@@ -14,7 +14,7 @@ class Ball:
 
         if self.rect.left <= 0:
             return "right"
-        elif self.rect.right >= 800:
+        elif self.rect.right >= 1024:
             return "left"
         return None
 
@@ -33,5 +33,5 @@ class Ball:
             self.speed_x = -self.speed_x
             self.speed_y += offset * 5  # Adjust the multiplier as needed for desired effect
 
-        if self.rect.top <= 0 or self.rect.bottom >= 600:
+        if self.rect.top <= 0 or self.rect.bottom >= 768:
             self.speed_y = -self.speed_y

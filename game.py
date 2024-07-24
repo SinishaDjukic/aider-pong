@@ -10,9 +10,9 @@ class Game:
         self.background_image = pygame.image.load('background.png')
         self.score1 = 0
         self.score2 = 0
-        self.paddle1 = Paddle(30, 250)
-        self.paddle2 = Paddle(760, 250)
-        self.balls = [Ball(395, 295)]
+        self.paddle1 = Paddle(30, 334)  # Centered vertically
+        self.paddle2 = Paddle(984, 334)  # Centered vertically
+        self.balls = [Ball(502, 374)]  # Centered horizontally and vertically
         self.powerup = PowerUp()
 
     def update(self):
