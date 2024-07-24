@@ -3,7 +3,7 @@ import random
 
 class Ball:
     def __init__(self, x, y, color=(255, 255, 255)):
-        self.rect = pygame.Rect(x, y, 10, 10)
+        self.rect = pygame.Rect(x, y, 20, 20)
         self.color = color
         self.speed_x = random.choice([-4, 4])
         self.speed_y = random.choice([-4, 4])
@@ -19,7 +19,7 @@ class Ball:
         return None
 
     def draw(self, screen):
-        pygame.draw.rect(screen, self.color, self.rect)
+        pygame.draw.ellipse(screen, self.color, self.rect)
 
     def check_collision(self, paddle1, paddle2):
         if self.rect.colliderect(paddle1.rect) or self.rect.colliderect(paddle2.rect):
