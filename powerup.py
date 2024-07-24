@@ -4,9 +4,9 @@ import math
 
 class PowerUp:
     def __init__(self):
-        self.rect = pygame.Rect(random.randint(100, 700), random.randint(50, 550), 40, 40)
+        self.rect = pygame.Rect(random.randint(100, 700), random.randint(50, 550), 80, 80)
         self.image = pygame.image.load('powerup_icon.png')
-        self.image = pygame.transform.scale(self.image, (40, 40))
+        self.image = pygame.transform.scale(self.image, (80, 80))
         self.spawn_time = pygame.time.get_ticks()
         self.animation_start_time = pygame.time.get_ticks()
         self.animation_duration = 500  # Animation duration in milliseconds
@@ -39,3 +39,14 @@ class PowerUp:
         self.rect.y = random.randint(50, 550)
         self.spawn_time = pygame.time.get_ticks()
         self.animation_start_time = pygame.time.get_ticks()
+    def draw(self, screen):
+        # Draw the shadow
+        shadow_rect = self.rect.copy()
+        shadow_rect.x += 5
+        shadow_rect.y += 5
+        shadow_surface = pygame.Surface((self.rect.width, self.rect.height), pygame.SRCALPHA)
+        pygame.draw.rect(shadow_surface, (50, 50, 50, 128), shadow_surface.get_rect(), border_radius=10)  # 128 is 50% transparency
+        screen.blit(shadow_surface, shadow_rect.topleft)
+        
+        # Draw the powerup
+        screen.blit(self.image, self.rect.topleft)
