@@ -10,7 +10,7 @@ class PowerUp:
         self.spawn_time = pygame.time.get_ticks()
         self.animation_start_time = pygame.time.get_ticks()
         self.animation_duration = 500  # Animation duration in milliseconds
-        self.animation_start_time = None
+        self.animation_start_time = pygame.time.get_ticks()
 
     def draw(self, screen):
         current_time = pygame.time.get_ticks()
@@ -38,3 +38,4 @@ class PowerUp:
         self.rect.x = random.randint(100, 700)
         self.rect.y = random.randint(50, 550)
         self.spawn_time = pygame.time.get_ticks()
+        self.animation_start_time = pygame.time.get_ticks()
