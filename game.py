@@ -98,6 +98,11 @@ class Game:
         
         # Draw the scaled background image
         self.screen.blit(scaled_background, (bg_x, bg_y))
+        # Create a semi-transparent black overlay
+        overlay = pygame.Surface(self.screen.get_size(), pygame.SRCALPHA)
+        overlay.fill((0, 0, 0, 128))  # 128 is 50% transparency
+        self.screen.blit(overlay, (0, 0))
+
         self.paddle1.draw(self.screen, base_color=(137, 207, 240))  # Baby blue
         self.paddle2.draw(self.screen, base_color=(0, 128, 0))  # Grass green
         for ball in self.balls:
