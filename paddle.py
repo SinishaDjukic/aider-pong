@@ -6,9 +6,9 @@ class Paddle:
         self.speed = 5
 
     def move(self, up=True):
-        if up:
+        if up and self.rect.top > 0:
             self.rect.y -= self.speed
-        else:
+        elif not up and self.rect.bottom < 600:
             self.rect.y += self.speed
 
     def draw(self, screen):
