@@ -21,7 +21,15 @@ class Ball:
 
     def check_collision(self, paddle1, paddle2):
         if self.rect.colliderect(paddle1.rect) or self.rect.colliderect(paddle2.rect):
+            # Calculate the deflection based on where the ball hits the paddle
+            if self.rect.colliderect(paddle1.rect):
+                offset = (self.rect.centery - paddle1.rect.centery) / (paddle1.rect.height / 2)
+            else:
+                offset = (self.rect.centery - paddle2.rect.centery) / (paddle2.rect.height / 2)
+            
+            # Apply curvature effect: the closer to the edge, the larger the deflection
             self.speed_x = -self.speed_x
+            self.speed_y += offset * 5  # Adjust the multiplier as needed for desired effect
 
         if self.rect.top <= 0 or self.rect.bottom >= 600:
             self.speed_y = -self.speed_y
