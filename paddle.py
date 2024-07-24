@@ -11,5 +11,20 @@ class Paddle:
         elif not up and self.rect.bottom < 600:
             self.rect.y += self.speed
 
-    def draw(self, screen, color=(255, 255, 255)):
-        pygame.draw.rect(screen, color, self.rect)
+    def draw(self, screen, base_color=(255, 255, 255)):
+        # Draw the paddle with a gradient effect
+        paddle_height = self.rect.height
+        segment_height = paddle_height // 5
+        for i in range(5):
+            segment_color = (
+                max(0, base_color[0] - i * 20),
+                max(0, base_color[1] - i * 20),
+                max(0, base_color[2] - i * 20)
+            )
+            segment_rect = pygame.Rect(
+                self.rect.x,
+                self.rect.y + i * segment_height,
+                self.rect.width,
+                segment_height
+            )
+            pygame.draw.rect(screen, segment_color, segment_rect)
