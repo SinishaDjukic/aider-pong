@@ -4,8 +4,8 @@ class Ball:
     def __init__(self, x, y, color=(255, 255, 255)):
         self.rect = pygame.Rect(x, y, 10, 10)
         self.color = color
-        self.speed_x = 4
-        self.speed_y = 4
+        self.speed_x = random.choice([-4, 4])
+        self.speed_y = random.choice([-4, 4])
 
     def move(self):
         self.rect.x += self.speed_x
