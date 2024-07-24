@@ -7,6 +7,7 @@ from ball import Ball
 class Game:
     def __init__(self, screen):
         self.screen = screen
+        self.background_image = pygame.image.load('background.png')
         self.score1 = 0
         self.score2 = 0
         self.paddle1 = Paddle(30, 250)
@@ -52,7 +53,7 @@ class Game:
             self.powerup.move()
 
     def draw(self):
-        self.screen.fill((0, 0, 0))
+        self.screen.blit(self.background_image, (0, 0))
         self.paddle1.draw(self.screen, base_color=(137, 207, 240))  # Baby blue
         self.paddle2.draw(self.screen, base_color=(0, 128, 0))  # Grass green
         for ball in self.balls:
