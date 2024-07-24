@@ -1,5 +1,6 @@
 import pygame
 import random
+import math
 
 class PowerUp:
     def __init__(self):
