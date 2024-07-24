@@ -1,10 +1,10 @@
 import pygame
 
 class Ball:
-    def __init__(self, x, y):
+    def __init__(self, x, y, color=(255, 255, 255)):
         self.rect = pygame.Rect(x, y, 10, 10)
-        self.speed_x = 5
-        self.speed_y = 5
+        self.speed_x = 4
+        self.speed_y = 4
 
     def move(self):
         self.rect.x += self.speed_x
@@ -17,7 +17,7 @@ class Ball:
         return None
 
     def draw(self, screen):
-        pygame.draw.rect(screen, (255, 255, 255), self.rect)
+        pygame.draw.rect(screen, self.color, self.rect)
 
     def check_collision(self, paddle1, paddle2):
         if self.rect.colliderect(paddle1.rect) or self.rect.colliderect(paddle2.rect):
