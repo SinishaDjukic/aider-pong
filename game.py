@@ -68,7 +68,12 @@ class Game:
         self.screen.blit(shadow_surface1, (50 + 5, 50 + 5))  # Offset by 5 pixels for shadow
         self.screen.blit(shadow_surface2, (924 + 5, 50 + 5))  # Offset by 5 pixels for shadow
 
-        # Blit scores
+        # Blit scores with shadow
+        shadow_text1 = font.render(str(self.score1), True, (0, 0, 0, 128))  # Black shadow with 50% transparency
+        shadow_text2 = font.render(str(self.score2), True, (0, 0, 0, 128))  # Black shadow with 50% transparency
+        self.screen.blit(shadow_text1, (50 + 5, 50 + 5))  # Offset by 5 pixels for shadow
+        self.screen.blit(shadow_text2, (924 + 5, 50 + 5))  # Offset by 5 pixels for shadow
+
         self.screen.blit(score1_surface, (50, 50))
         self.screen.blit(score2_surface, (924, 50))
         # Get the dimensions of the screen
