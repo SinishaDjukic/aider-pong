@@ -1,4 +1,5 @@
 import pygame
+import random
 from paddle import Paddle
 from ball import Ball
 
