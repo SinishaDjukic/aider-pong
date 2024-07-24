@@ -3,6 +3,7 @@ import pygame
 class Ball:
     def __init__(self, x, y, color=(255, 255, 255)):
         self.rect = pygame.Rect(x, y, 10, 10)
+        self.color = color
         self.speed_x = 4
         self.speed_y = 4
 
