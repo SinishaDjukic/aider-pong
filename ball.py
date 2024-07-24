@@ -23,7 +23,9 @@ class Ball:
         shadow_rect = self.rect.copy()
         shadow_rect.x += 5
         shadow_rect.y += 5
-        pygame.draw.ellipse(screen, (50, 50, 50), shadow_rect)
+        shadow_surface = pygame.Surface((self.rect.width, self.rect.height), pygame.SRCALPHA)
+        shadow_surface.fill((50, 50, 50, 128))  # 128 is 50% transparency
+        screen.blit(shadow_surface, shadow_rect.topleft)
         
         # Draw the ball
         pygame.draw.ellipse(screen, self.color, self.rect)
