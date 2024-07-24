@@ -19,6 +19,13 @@ class Ball:
         return None
 
     def draw(self, screen):
+        # Draw the shadow
+        shadow_rect = self.rect.copy()
+        shadow_rect.x += 5
+        shadow_rect.y += 5
+        pygame.draw.ellipse(screen, (50, 50, 50), shadow_rect)
+        
+        # Draw the ball
         pygame.draw.ellipse(screen, self.color, self.rect)
 
     def check_collision(self, paddle1, paddle2):
