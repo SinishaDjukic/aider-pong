@@ -27,14 +27,14 @@ class Game:
 
         for ball in self.balls:
             result = ball.move()
-            if result == "left":
-                self.score1 += 1
+            if result == "left" or result == "right":
+                if result == "left":
+                    self.score1 += 1
+                else:
+                    self.score2 += 1
                 self.balls.remove(ball)
-                self.balls.append(Ball(395, 295))
-            elif result == "right":
-                self.score2 += 1
-                self.balls.remove(ball)
-                self.balls.append(Ball(395, 295))
+                if not any(b.color == (255, 255, 255) for b in self.balls):
+                    self.balls.append(Ball(395, 295))
             ball.check_collision(self.paddle1, self.paddle2)
 
             if ball.rect.colliderect(self.powerup.rect):
