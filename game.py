@@ -1,6 +1,7 @@
 import pygame
 import random
 from paddle import Paddle
+from powerup import PowerUp
 from ball import Ball
 
 class Game:
@@ -10,7 +11,8 @@ class Game:
         self.score2 = 0
         self.paddle1 = Paddle(30, 250)
         self.paddle2 = Paddle(760, 250)
-        self.ball = Ball(395, 295)
+        self.balls = [Ball(395, 295)]
+        self.powerup = PowerUp()
 
     def update(self):
         keys = pygame.key.get_pressed()
@@ -23,22 +25,35 @@ class Game:
         if keys[pygame.K_DOWN]:
             self.paddle2.move(up=False)
 
-        result = self.ball.move()
-        if result == "left":
-            self.score1 += 1
-            self.ball = Ball(395, 295)
-            self.ball.speed_x = random.choice([-5, 5])
-            self.ball.speed_y = random.choice([-5, 5])
-        elif result == "right":
-            self.score2 += 1
-            self.ball = Ball(395, 295)
-        self.ball.check_collision(self.paddle1, self.paddle2)
+        for ball in self.balls:
+            result = ball.move()
+            if result == "left":
+                self.score1 += 1
+                self.balls.remove(ball)
+                self.balls.append(Ball(395, 295))
+            elif result == "right":
+                self.score2 += 1
+                self.balls.remove(ball)
+                self.balls.append(Ball(395, 295))
+            ball.check_collision(self.paddle1, self.paddle2)
+
+            if ball.rect.colliderect(self.powerup.rect):
+                self.balls.append(Ball(ball.rect.x, ball.rect.y))
+                self.balls[-1].speed_x = random.choice([-4, 4])
+                self.balls[-1].speed_y = random.choice([-4, 4])
+                self.balls[-1].color = (255, 165, 0)  # Duck orange
+                self.powerup.move()
+
+        if pygame.time.get_ticks() - self.powerup.spawn_time > 15000:
+            self.powerup.move()
 
     def draw(self):
         self.screen.fill((0, 0, 0))
         self.paddle1.draw(self.screen, base_color=(137, 207, 240))  # Baby blue
         self.paddle2.draw(self.screen, base_color=(0, 128, 0))  # Grass green
-        self.ball.draw(self.screen)
+        for ball in self.balls:
+            ball.draw(self.screen)
+        self.powerup.draw(self.screen)
         font = pygame.font.Font(None, 74)
         score_text1 = font.render(str(self.score1), 1, (255, 255, 255))
         score_text2 = font.render(str(self.score2), 1, (255, 255, 255))
