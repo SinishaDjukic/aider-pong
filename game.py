@@ -5,6 +5,8 @@ from ball import Ball
 class Game:
     def __init__(self, screen):
         self.screen = screen
+        self.score1 = 0
+        self.score2 = 0
         self.paddle1 = Paddle(30, 250)
         self.paddle2 = Paddle(760, 250)
         self.ball = Ball(395, 295)
@@ -20,7 +22,13 @@ class Game:
         if keys[pygame.K_DOWN]:
             self.paddle2.move(up=False)
 
-        self.ball.move()
+        result = self.ball.move()
+        if result == "left":
+            self.score1 += 1
+            self.ball = Ball(395, 295)
+        elif result == "right":
+            self.score2 += 1
+            self.ball = Ball(395, 295)
         self.ball.check_collision(self.paddle1, self.paddle2)
 
     def draw(self):
@@ -28,3 +36,8 @@ class Game:
         self.paddle1.draw(self.screen)
         self.paddle2.draw(self.screen)
         self.ball.draw(self.screen)
+        font = pygame.font.Font(None, 74)
+        score_text1 = font.render(str(self.score1), 1, (255, 255, 255))
+        score_text2 = font.render(str(self.score2), 1, (255, 255, 255))
+        self.screen.blit(score_text1, (250, 10))
+        self.screen.blit(score_text2, (520, 10))

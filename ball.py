@@ -10,6 +10,12 @@ class Ball:
         self.rect.x += self.speed_x
         self.rect.y += self.speed_y
 
+        if self.rect.left <= 0:
+            return "right"
+        elif self.rect.right >= 800:
+            return "left"
+        return None
+
     def draw(self, screen):
         pygame.draw.rect(screen, (255, 255, 255), self.rect)
 
