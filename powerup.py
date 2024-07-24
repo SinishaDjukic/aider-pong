@@ -9,6 +9,7 @@ class PowerUp:
         self.image = pygame.transform.scale(self.image, (40, 40))
         self.spawn_time = pygame.time.get_ticks()
         self.animation_start_time = self.spawn_time
+        self.animation_start_time = self.spawn_time
         self.animation_duration = 1000  # 1 second for the animation
 
     def draw(self, screen):
