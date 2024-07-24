@@ -100,11 +100,11 @@ class Game:
         self.powerup.draw(self.screen)
         font = pygame.font.Font(None, 74)
         # Draw shadow for score1
-        score_text1_shadow = font.render(str(self.score1), 1, (0, 0, 0))
+        score_text1_shadow = font.render(str(self.score1), 1, (0, 0, 0, 128))  # 128 is 50% transparency
         self.screen.blit(score_text1_shadow, (255, 15))
         
         # Draw shadow for score2
-        score_text2_shadow = font.render(str(self.score2), 1, (0, 0, 0))
+        score_text2_shadow = font.render(str(self.score2), 1, (0, 0, 0, 128))  # 128 is 50% transparency
         self.screen.blit(score_text2_shadow, (525, 15))
         
         score_text1 = font.render(str(self.score1), 1, (137, 207, 240))  # Baby blue
