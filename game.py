@@ -26,6 +26,8 @@ class Game:
         if result == "left":
             self.score1 += 1
             self.ball = Ball(395, 295)
+            self.ball.speed_x = random.choice([-5, 5])
+            self.ball.speed_y = random.choice([-5, 5])
         elif result == "right":
             self.score2 += 1
             self.ball = Ball(395, 295)
