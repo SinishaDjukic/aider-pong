@@ -3,7 +3,7 @@ from game import Game
 
 def main():
     pygame.init()
-    screen = pygame.display.set_mode((800, 600))
+    screen = pygame.display.set_mode((1024, 768))
     pygame.display.set_caption("Pong Game")
     clock = pygame.time.Clock()
     game = Game(screen)
