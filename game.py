@@ -53,7 +53,28 @@ class Game:
             self.powerup.move()
 
     def draw(self):
-        self.screen.blit(self.background_image, (0, 0))
+        # Get the dimensions of the screen
+        screen_width, screen_height = self.screen.get_size()
+        
+        # Get the dimensions of the background image
+        bg_width, bg_height = self.background_image.get_size()
+        
+        # Calculate the scaling factor to fit the image to the screen
+        scale_factor = min(screen_width / bg_width, screen_height / bg_height)
+        
+        # Calculate the new size of the background image
+        new_bg_width = int(bg_width * scale_factor)
+        new_bg_height = int(bg_height * scale_factor)
+        
+        # Scale the background image
+        scaled_background = pygame.transform.scale(self.background_image, (new_bg_width, new_bg_height))
+        
+        # Calculate the position to center the image on the screen
+        bg_x = (screen_width - new_bg_width) // 2
+        bg_y = (screen_height - new_bg_height) // 2
+        
+        # Draw the scaled background image
+        self.screen.blit(scaled_background, (bg_x, bg_y))
         self.paddle1.draw(self.screen, base_color=(137, 207, 240))  # Baby blue
         self.paddle2.draw(self.screen, base_color=(0, 128, 0))  # Grass green
         for ball in self.balls:
