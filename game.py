@@ -11,7 +11,7 @@ class Game:
         self.background_image = pygame.image.load('background.png')
         self.score1 = 0
         self.score2 = 0
-        self.timer = 30
+        self.timer = 10
         self.last_timer_update = pygame.time.get_ticks()
         self.paddle1 = Paddle(30, 334)  # Centered vertically
         self.paddle2 = Paddle(984, 334)  # Centered vertically
@@ -44,7 +44,7 @@ class Game:
                     self.balls.append(Ball(502, 374, obstacles=self.obstacles))  # Re-spawn the ball at the center
                 else:
                     self.balls.append(Ball(502, 374, obstacles=self.obstacles, color=(255, 165, 0)))  # Duck orange
-                self.timer = 30
+                self.timer = 10
             ball.check_collision(self.paddle1, self.paddle2)
 
             if ball.rect.colliderect(self.powerup.rect) and ball.color == (255, 255, 255):
