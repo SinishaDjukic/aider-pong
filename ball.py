@@ -18,6 +18,9 @@ class Ball:
             return "right"
         elif self.rect.right >= 1024:
             return "left"
+        if self.rect.top <= 0 or self.rect.bottom >= 768:
+            self.speed_y = -self.speed_y
+
         for obstacle in self.obstacles:
             if self.rect.colliderect(obstacle.rect):
                 if abs(self.rect.right - obstacle.rect.left) < abs(self.rect.bottom - obstacle.rect.top) and abs(self.rect.right - obstacle.rect.left) < abs(self.rect.top - obstacle.rect.bottom):
