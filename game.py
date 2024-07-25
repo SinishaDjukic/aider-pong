@@ -148,7 +148,7 @@ class Game:
         self.screen.blit(timer_surface, (timer_x, 10))
 
         self.paddle1.draw(self.screen, base_color=(137, 207, 240))  # Baby blue
-        self.paddle2.draw(self.screen, base_color=(0, 128, 0))  # Grass green
+        self.paddle2.draw(self.screen, base_color=(0, 255, 0))  # Bright green
         for ball in self.balls:
             ball.draw(self.screen)
         self.powerup.draw(self.screen)
