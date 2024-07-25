@@ -19,8 +19,10 @@ class Ball:
             return "left"
         for obstacle in self.obstacles:
             if self.rect.colliderect(obstacle.rect):
-                self.speed_x = -self.speed_x
-                self.speed_y = -self.speed_y
+                if abs(self.rect.right - obstacle.rect.left) < 10 or abs(self.rect.left - obstacle.rect.right) < 10:
+                    self.speed_x = -self.speed_x
+                if abs(self.rect.bottom - obstacle.rect.top) < 10 or abs(self.rect.top - obstacle.rect.bottom) < 10:
+                    self.speed_y = -self.speed_y
                 return None
 
     def draw(self, screen):
