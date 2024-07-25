@@ -6,7 +6,8 @@ class Obstacle:
         screen_width = 1024
         left_bound = int(screen_width * 0.2)
         right_bound = int(screen_width * 0.8)
-        self.rect = pygame.Rect(random.randint(left_bound, right_bound - 50), random.randint(50, 718), 50, 50)
+        self.rect = pygame.Rect(random.randint(left_bound, right_bound - 60), random.randint(50, 748 - 20), 60, 20)
+        self.angle = random.choice([-90, 0, 90, 180])
         self.color = (245, 245, 220)  # Beige color
 
     def draw(self, screen):
