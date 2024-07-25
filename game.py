@@ -16,6 +16,7 @@ class Game:
         self.paddle1 = Paddle(30, 334)  # Centered vertically
         self.paddle2 = Paddle(984, 334)  # Centered vertically
         self.obstacles = []
+        self.obstacles = []
         self.balls = [Ball(502, 374, obstacles=self.obstacles)]  # Centered horizontally and vertically
         self.powerup = PowerUp()
         self.obstacles = []
@@ -61,8 +62,12 @@ class Game:
             self.timer -= 1
             self.last_timer_update = current_time
             if self.timer <= 0:
-                self.obstacles.append(Obstacle())
-                self.obstacles.append(Obstacle())
+                new_obstacle1 = Obstacle()
+                new_obstacle2 = Obstacle()
+                self.obstacles.append(new_obstacle1)
+                self.obstacles.append(new_obstacle2)
+                for ball in self.balls:
+                    ball.obstacles = self.obstacles
                 self.timer = 10
 
     def draw(self):
