@@ -36,11 +36,7 @@ class Game:
                 else:
                     self.score2 += 1
                 self.balls.remove(ball)
-                if not any(b.color == (255, 255, 255) for b in self.balls):
-                    new_ball = Ball(395, 295)
-                    new_ball.speed_x = random.choice([-4, 4])
-                    new_ball.speed_y = random.choice([-4, 4])
-                    self.balls.append(new_ball)
+                self.timer = 30
             ball.check_collision(self.paddle1, self.paddle2)
 
             if ball.rect.colliderect(self.powerup.rect):
