@@ -21,7 +21,12 @@ class Ball:
             return "right"
         elif self.rect.right >= 1024:
             return "left"
-        if ball_center_y - ball_radius <= 0 or ball_center_y + ball_radius >= 768:
+        if ball_center_y - ball_radius <= 0:
+            self.rect.y = ball_radius  # Correct the position to avoid sticking
+            self.speed_y = -self.speed_y
+        elif ball_center_y + ball_radius >= 768:
+            self.rect.y = 768 - ball_radius  # Correct the position to avoid sticking
+            self.speed_y = -self.speed_y
             self.speed_y = -self.speed_y
 
         for obstacle in self.obstacles:
