@@ -114,8 +114,10 @@ class Game:
         shadow_color = (0, 0, 0, 128)  # Black shadow with 50% transparency
         shadow_surface1 = font.render(str(self.score1), True, shadow_color)
         shadow_surface2 = font.render(str(self.score2), True, shadow_color)
-        self.screen.blit(shadow_surface1, (50 + shadow_offset, 50 + shadow_offset))
-        self.screen.blit(shadow_surface2, (924 + shadow_offset, 50 + shadow_offset))
+        self.screen.blit(score1_surface, (score1_x, 50))
+        self.screen.blit(score2_surface, (score2_x, 50))
+        self.screen.blit(shadow_surface1, (score1_x + shadow_offset, 50 + shadow_offset))
+        self.screen.blit(shadow_surface2, (score2_x + shadow_offset, 50 + shadow_offset))
         self.screen.blit(shadow_surface1, (score1_x + shadow_offset, 50 + shadow_offset))
         self.screen.blit(shadow_surface2, (score2_x + shadow_offset, 50 + shadow_offset))
         self.screen.blit(score1_surface, (score1_x, 50))
