@@ -14,11 +14,14 @@ class Ball:
         self.rect.x += self.speed_x
         self.rect.y += self.speed_y
 
+        ball_radius = self.rect.width // 2
+        ball_center_y = self.rect.centery
+
         if self.rect.left <= 0:
             return "right"
         elif self.rect.right >= 1024:
             return "left"
-        if self.rect.top <= 0 or self.rect.bottom >= 768:
+        if ball_center_y - ball_radius <= 0 or ball_center_y + ball_radius >= 768:
             self.speed_y = -self.speed_y
 
         for obstacle in self.obstacles:
