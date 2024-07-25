@@ -108,8 +108,8 @@ class Game:
 
         # Draw the scores with shadow
         font = pygame.font.Font(None, 74)
-        score1_surface = font.render(str(self.score1), True, (255, 255, 255))
-        score2_surface = font.render(str(self.score2), True, (255, 255, 255))
+        score1_surface = font.render(str(self.score1), True, (255, 255, 255))  # White
+        score2_surface = font.render(str(self.score2), True, (255, 255, 255))  # White
         shadow_offset = 5
         shadow_color = (0, 0, 0, 128)  # Black shadow with 50% transparency
         shadow_surface1 = font.render(str(self.score1), True, shadow_color)
@@ -133,7 +133,7 @@ class Game:
         timer_font = pygame.font.Font(None, 74)
         timer_surface = timer_font.render(str(self.timer), True, (255, 255, 255))
         timer_x = (screen_width // 2) - (timer_surface.get_width() // 2)
-        self.screen.blit(timer_surface, (timer_x, 10))
+        self.screen.blit(timer_surface, (timer_x, 50))
 
         self.paddle1.draw(self.screen, base_color=(137, 207, 240))  # Baby blue
         self.paddle2.draw(self.screen, base_color=(0, 255, 0))  # Bright green
