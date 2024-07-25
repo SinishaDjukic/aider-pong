@@ -106,21 +106,15 @@ class Game:
         bg_y = (screen_height - new_bg_height) // 2
         self.screen.blit(scaled_background, (bg_x, bg_y))
 
-        # Draw the scores with shadow
+        # Draw the scores without shadow
         font = pygame.font.Font(None, 74)
         score1_surface = font.render(str(self.score1), True, (255, 255, 255))  # White
         score2_surface = font.render(str(self.score2), True, (255, 255, 255))  # White
-        shadow_offset = 5
-        shadow_color = (0, 0, 0, 128)  # Black shadow with 50% transparency
-        shadow_surface1 = font.render(str(self.score1), True, shadow_color)
-        shadow_surface2 = font.render(str(self.score2), True, shadow_color)
 
         screen_width = self.screen.get_width()
         score1_x = (screen_width // 4) - (score1_surface.get_width() // 2)
         score2_x = (3 * screen_width // 4) - (score2_surface.get_width() // 2)
 
-        self.screen.blit(shadow_surface1, (score1_x + shadow_offset, 50 + shadow_offset))
-        self.screen.blit(shadow_surface2, (score2_x + shadow_offset, 50 + shadow_offset))
         self.screen.blit(score1_surface, (score1_x, 50))
         self.screen.blit(score2_surface, (score2_x, 50))
 
