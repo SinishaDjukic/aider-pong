@@ -41,6 +41,7 @@ class Game:
                 else:
                     self.score2 += 1
                 if ball.color == (255, 255, 255):
+                    print(f"Last deflected by: {ball.last_deflected_by}")
                     self.balls.remove(ball)
                     # Ensure only one white ball exists
                     if not any(b.color == (255, 255, 255) for b in self.balls):
