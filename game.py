@@ -23,14 +23,15 @@ class Game:
 
     def update(self):
         keys = pygame.key.get_pressed()
-        if keys[pygame.K_w]:
-            self.paddle1.move(up=True)
-        if keys[pygame.K_s]:
-            self.paddle1.move(up=False)
-        if keys[pygame.K_UP]:
-            self.paddle2.move(up=True)
-        if keys[pygame.K_DOWN]:
-            self.paddle2.move(up=False)
+        if keys[pygame.K_w] or keys[pygame.K_s]:
+            self.paddle1.move(up=keys[pygame.K_w])
+        else:
+            self.paddle1.move(up=None)
+
+        if keys[pygame.K_UP] or keys[pygame.K_DOWN]:
+            self.paddle2.move(up=keys[pygame.K_UP])
+        else:
+            self.paddle2.move(up=None)
 
         for ball in self.balls:
             result = ball.move()
