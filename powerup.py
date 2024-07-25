@@ -44,8 +44,11 @@ class PowerUp:
         shadow_rect = self.rect.copy()
         shadow_rect.x += 5
         shadow_rect.y += 5
-        shadow_surface = pygame.Surface((self.rect.width, self.rect.height), pygame.SRCALPHA)
-        pygame.draw.rect(shadow_surface, (50, 50, 50, 128), shadow_surface.get_rect(), border_radius=10)  # 128 is 50% transparency
+        shadow_width = self.rect.width // 2
+        shadow_height = self.rect.height // 2
+        shadow_surface = pygame.Surface((shadow_width, shadow_height), pygame.SRCALPHA)
+        pygame.draw.rect(shadow_surface, (50, 50, 50, 128), shadow_surface.get_rect(), border_radius=5)  # 128 is 50% transparency
+        shadow_rect = shadow_surface.get_rect(center=(self.rect.centerx + 5, self.rect.centery + 5))
         screen.blit(shadow_surface, shadow_rect.topleft)
         
         # Draw the powerup
