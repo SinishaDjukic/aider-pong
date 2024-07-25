@@ -3,6 +3,7 @@ import random
 
 class Ball:
     def __init__(self, x, y, color=(255, 255, 255), obstacles=None):
+        self.last_deflected_by = None  # Track the last user who deflected the ball
         self.rect = pygame.Rect(x, y, 20, 20)
         self.color = color
         self.speed_x = random.choice([-4, 4])
@@ -23,7 +24,8 @@ class Ball:
                     self.speed_x = -self.speed_x
                 elif abs(self.rect.left - obstacle.rect.right) < abs(self.rect.bottom - obstacle.rect.top) and abs(self.rect.left - obstacle.rect.right) < abs(self.rect.top - obstacle.rect.bottom):
                     self.speed_x = -self.speed_x
-                else:
+                    if ball.color == (255, 255, 255):
+                        ball.last_deflected_by = "paddle2"
                     self.speed_y = -self.speed_y
                 return None
 
@@ -44,7 +46,8 @@ class Ball:
             # Calculate the deflection based on where the ball hits the paddle
             if self.rect.colliderect(paddle1.rect):
                 offset = (self.rect.centery - paddle1.rect.centery) / (paddle1.rect.height / 2)
-            else:
+                if ball.color == (255, 255, 255):
+                    ball.last_deflected_by = "paddle1"
                 offset = (self.rect.centery - paddle2.rect.centery) / (paddle2.rect.height / 2)
             
             # Apply curvature effect: the closer to the edge, the larger the deflection
