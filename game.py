@@ -106,6 +106,11 @@ class Game:
         bg_y = (screen_height - new_bg_height) // 2
         self.screen.blit(scaled_background, (bg_x, bg_y))
 
+        # Dim the background by adding a semi-transparent black overlay
+        dim_overlay = pygame.Surface(self.screen.get_size(), pygame.SRCALPHA)
+        dim_overlay.fill((0, 0, 0, 128))  # 128 is 50% transparency
+        self.screen.blit(dim_overlay, (0, 0))
+
         # Draw the scores without shadow
         font = pygame.font.Font(None, 74)
         score1_surface = font.render(str(self.score1), True, (255, 255, 255))  # White
