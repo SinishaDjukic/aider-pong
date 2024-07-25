@@ -123,11 +123,6 @@ class Game:
         self.screen.blit(score1_surface, (score1_x, 50))
         self.screen.blit(score2_surface, (score2_x, 50))
 
-        # Draw the countdown timer
-        timer_font = pygame.font.Font(None, 74)
-        timer_surface = timer_font.render(str(self.timer), True, (255, 255, 255))
-        timer_x = (screen_width // 2) - (timer_surface.get_width() // 2)
-        self.screen.blit(timer_surface, (timer_x, 50))
 
         self.paddle1.draw(self.screen, base_color=(137, 207, 240))  # Baby blue
         self.paddle2.draw(self.screen, base_color=(0, 255, 0))  # Bright green
@@ -208,12 +203,6 @@ class Game:
         overlay.fill((0, 0, 0, 128))  # 128 is 50% transparency
         self.screen.blit(overlay, (0, 0))
 
-        # Draw the countdown timer
-        timer_font = pygame.font.Font(None, 74)
-        timer_surface = timer_font.render(str(self.timer), True, (255, 255, 255))
-        timer_x = (screen_width // 2) - (timer_surface.get_width() // 2)
-
-        self.screen.blit(timer_surface, (timer_x, 10))
 
         self.paddle1.draw(self.screen, base_color=(137, 207, 240))  # Baby blue
         self.paddle2.draw(self.screen, base_color=(0, 255, 0))  # Bright green
