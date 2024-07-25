@@ -15,7 +15,7 @@ class Game:
         self.last_timer_update = pygame.time.get_ticks()
         self.paddle1 = Paddle(30, 334)  # Centered vertically
         self.paddle2 = Paddle(984, 334)  # Centered vertically
-        self.balls = [Ball(502, 374)]  # Centered horizontally and vertically
+        self.balls = [Ball(502, 374, obstacles=self.obstacles)]  # Centered horizontally and vertically
         self.powerup = PowerUp()
         self.obstacles = []
 
@@ -38,12 +38,12 @@ class Game:
                 else:
                     self.score2 += 1
                 self.balls.remove(ball)
-                self.balls.append(Ball(502, 374))  # Re-spawn the ball at the center
+                self.balls.append(Ball(502, 374, obstacles=self.obstacles))  # Re-spawn the ball at the center
                 self.timer = 30
             ball.check_collision(self.paddle1, self.paddle2)
 
             if ball.rect.colliderect(self.powerup.rect):
-                new_ball = Ball(ball.rect.x, ball.rect.y)
+                new_ball = Ball(ball.rect.x, ball.rect.y, obstacles=self.obstacles)
                 new_ball.speed_x = ball.speed_x
                 new_ball.speed_y = random.choice([-4, 4])
                 self.balls.append(new_ball)

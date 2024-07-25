@@ -2,10 +2,11 @@ import pygame
 import random
 
 class Ball:
-    def __init__(self, x, y, color=(255, 255, 255)):
+    def __init__(self, x, y, color=(255, 255, 255), obstacles=None):
         self.rect = pygame.Rect(x, y, 20, 20)
         self.color = color
         self.speed_x = random.choice([-4, 4])
+        self.obstacles = obstacles if obstacles is not None else []
         self.speed_y = random.choice([-4, 4])
 
     def move(self):
