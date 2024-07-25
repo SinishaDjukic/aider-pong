@@ -27,7 +27,18 @@ class Paddle:
             elif self.speed < 0:
                 self.speed = min(self.speed + self.deceleration, 0)
 
+        # Update paddle position
         self.rect.y += self.speed
+
+        # Ensure the paddle does not move beyond the top edge
+        if self.rect.top < 0:
+            self.rect.top = 0
+            self.speed = 0
+
+        # Ensure the paddle does not move beyond the bottom edge
+        if self.rect.bottom > 768:
+            self.rect.bottom = 768
+            self.speed = 0
 
         # Apply deceleration when no key is pressed
         if not up and not self.rect.bottom < 768:
