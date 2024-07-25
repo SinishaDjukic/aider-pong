@@ -25,7 +25,7 @@ class Game:
         keys = pygame.key.get_pressed()
         if keys[pygame.K_w] or keys[pygame.K_s]:
             self.paddle1.move(up=keys[pygame.K_w])
-        else:
+        elif self.score2 >= 5:
             self.paddle1.move(up=None)
 
         if keys[pygame.K_UP] or keys[pygame.K_DOWN]:
@@ -33,7 +33,7 @@ class Game:
         else:
             self.paddle2.move(up=None)
 
-        if self.score1 >= 50 or self.score2 >= 50:
+        if self.score1 >= 5 or self.score2 >= 5:
             self.display_winner()
             return
 
@@ -145,7 +145,7 @@ class Game:
 
     def display_winner(self):
         font = pygame.font.Font(None, 150)
-        if self.score1 >= 50:
+        if self.score1 >= 5:
             winner_text = "BLUE WINS!"
             color = (137, 207, 240)  # Baby blue
         else:
