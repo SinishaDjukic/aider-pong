@@ -42,12 +42,14 @@ class Ball:
         pygame.draw.ellipse(screen, self.color, self.rect)
 
     def check_collision(self, paddle1, paddle2):
+        offset = 0  # Initialize offset
         if self.rect.colliderect(paddle1.rect) or self.rect.colliderect(paddle2.rect):
             # Calculate the deflection based on where the ball hits the paddle
             if self.rect.colliderect(paddle1.rect):
                 offset = (self.rect.centery - paddle1.rect.centery) / (paddle1.rect.height / 2)
                 if self.color == (255, 255, 255):
                     self.last_deflected_by = "paddle1"
+            elif self.rect.colliderect(paddle2.rect):
                 offset = (self.rect.centery - paddle2.rect.centery) / (paddle2.rect.height / 2)
             
             # Apply curvature effect: the closer to the edge, the larger the deflection
