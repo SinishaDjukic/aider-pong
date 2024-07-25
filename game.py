@@ -53,26 +53,10 @@ class Game:
             self.powerup.move()
 
     def draw(self):
-        # Draw the scores with shadow
+        # Draw the scores without shadow
         font = pygame.font.Font(None, 74)
         score1_surface = font.render(str(self.score1), True, (255, 255, 255))
         score2_surface = font.render(str(self.score2), True, (255, 255, 255))
-
-        # Create shadow surfaces
-        shadow_surface1 = pygame.Surface(score1_surface.get_size(), pygame.SRCALPHA)
-        shadow_surface2 = pygame.Surface(score2_surface.get_size(), pygame.SRCALPHA)
-        shadow_surface1.fill((50, 50, 50, 128))  # 128 is 50% transparency
-        shadow_surface2.fill((50, 50, 50, 128))  # 128 is 50% transparency
-
-        # Blit shadows
-        self.screen.blit(shadow_surface1, (50 + 5, 50 + 5))  # Offset by 5 pixels for shadow
-        self.screen.blit(shadow_surface2, (924 + 5, 50 + 5))  # Offset by 5 pixels for shadow
-
-        # Blit scores with shadow
-        shadow_text1 = font.render(str(self.score1), True, (0, 0, 0, 128))  # Black shadow with 50% transparency
-        shadow_text2 = font.render(str(self.score2), True, (0, 0, 0, 128))  # Black shadow with 50% transparency
-        self.screen.blit(shadow_text1, (50 + 5, 50 + 5))  # Offset by 5 pixels for shadow
-        self.screen.blit(shadow_text2, (924 + 5, 50 + 5))  # Offset by 5 pixels for shadow
 
         self.screen.blit(score1_surface, (50, 50))
         self.screen.blit(score2_surface, (924, 50))
