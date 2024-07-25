@@ -11,7 +11,7 @@ class Game:
         self.background_image = pygame.image.load('background.png')
         self.score1 = 0
         self.score2 = 0
-        self.timer = 10
+        self.timer = 5
         self.last_timer_update = pygame.time.get_ticks()
         self.paddle1 = Paddle(30, 334)  # Centered vertically
         self.paddle2 = Paddle(984, 334)  # Centered vertically
@@ -85,6 +85,13 @@ class Game:
             self.timer -= 1
             self.last_timer_update = current_time
             if self.timer <= 0:
+                new_obstacle = Obstacle()
+                # Ensure the new obstacle does not overlap with existing obstacles
+                while any(new_obstacle.rect.colliderect(obstacle.rect) for obstacle in self.obstacles):
+                    new_obstacle = Obstacle()
+                self.obstacles.append(new_obstacle)
+                for ball in self.balls:
+                    ball.obstacles = self.obstacles
                 new_obstacle = Obstacle()
                 # Ensure the new obstacle does not overlap with existing obstacles
                 while any(new_obstacle.rect.colliderect(obstacle.rect) for obstacle in self.obstacles):
