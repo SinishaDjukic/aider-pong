@@ -70,8 +70,12 @@ class Game:
         self.screen.blit(shadow_surface2, (924 + shadow_offset, 50 + shadow_offset))
 
         # Blit scores
-        self.screen.blit(score1_surface, (50, 50))
-        self.screen.blit(score2_surface, (924, 50))
+        screen_width = self.screen.get_width()
+        score1_x = (screen_width // 4) - (score1_surface.get_width() // 2)
+        score2_x = (3 * screen_width // 4) - (score2_surface.get_width() // 2)
+        
+        self.screen.blit(score1_surface, (score1_x, 50))
+        self.screen.blit(score2_surface, (score2_x, 50))
         # Get the dimensions of the screen
         screen_width, screen_height = self.screen.get_size()
         
@@ -108,5 +112,8 @@ class Game:
         
         score_text1 = font.render(str(self.score1), 1, (137, 207, 240))  # Baby blue
         score_text2 = font.render(str(self.score2), 1, (0, 128, 0))  # Grass green
-        self.screen.blit(score_text1, (250, 10))
-        self.screen.blit(score_text2, (520, 10))
+        score_text1_x = (screen_width // 4) - (score_text1.get_width() // 2)
+        score_text2_x = (3 * screen_width // 4) - (score_text2.get_width() // 2)
+        
+        self.screen.blit(score_text1, (score_text1_x, 10))
+        self.screen.blit(score_text2, (score_text2_x, 10))
