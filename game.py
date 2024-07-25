@@ -15,8 +15,8 @@ class Game:
         self.last_timer_update = pygame.time.get_ticks()
         self.paddle1 = Paddle(30, 334)  # Centered vertically
         self.paddle2 = Paddle(984, 334)  # Centered vertically
-        self.obstacles = []
         self.balls = [Ball(502, 374, obstacles=self.obstacles)]  # Centered horizontally and vertically
+        self.obstacles = []
         self.powerup = PowerUp()
         self.obstacles = []
 
