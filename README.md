@@ -1,5 +1,5 @@
 # Intro
-This as a remake of the Pong game in Python, created entirely using the [Aider Chat|https://aider.chat/].
+This as a remake of the Pong game in Python, created entirely using the Aider Chat https://aider.chat/
 
 My goal was to see how easy it is to create a game using Aider without ever changing a line of code manually - all code modifications were done via the Aider text console chat. The only manual actions were generating and downloading a background image, and downloading a powerup icon.
 
