@@ -40,16 +40,5 @@ class PowerUp:
         self.spawn_time = pygame.time.get_ticks()
         self.animation_start_time = pygame.time.get_ticks()
     def draw(self, screen):
-        # Draw the shadow
-        shadow_rect = self.rect.copy()
-        shadow_rect.x += 5
-        shadow_rect.y += 5
-        shadow_width = self.rect.width // 2
-        shadow_height = self.rect.height // 2
-        shadow_surface = pygame.Surface((shadow_width, shadow_height), pygame.SRCALPHA)
-        pygame.draw.rect(shadow_surface, (50, 50, 50, 128), shadow_surface.get_rect(), border_radius=5)  # 128 is 50% transparency
-        shadow_rect = shadow_surface.get_rect(center=(self.rect.centerx + 5, self.rect.centery + 5))
-        screen.blit(shadow_surface, shadow_rect.topleft)
-        
         # Draw the powerup
         screen.blit(self.image, self.rect.topleft)
