@@ -10,7 +10,7 @@ class Game:
         self.background_image = pygame.image.load('background.png')
         self.score1 = 0
         self.score2 = 0
-        self.timer = 60
+        self.timer = 30
         self.last_timer_update = pygame.time.get_ticks()
         self.paddle1 = Paddle(30, 334)  # Centered vertically
         self.paddle2 = Paddle(984, 334)  # Centered vertically
