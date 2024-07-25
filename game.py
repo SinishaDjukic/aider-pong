@@ -41,9 +41,6 @@ class Game:
                     new_ball.speed_x = random.choice([-4, 4])
                     new_ball.speed_y = random.choice([-4, 4])
                     self.balls.append(new_ball)
-            if ball.color == (255, 255, 255):
-                self.timer = 60
-                self.last_timer_update = pygame.time.get_ticks()
             ball.check_collision(self.paddle1, self.paddle2)
 
             if ball.rect.colliderect(self.powerup.rect):
@@ -57,6 +54,7 @@ class Game:
         if pygame.time.get_ticks() - self.powerup.spawn_time > 15000:
             self.powerup.move()
 
+        # Update the countdown timer
         current_time = pygame.time.get_ticks()
         if current_time - self.last_timer_update >= 1000:
             self.timer -= 1
