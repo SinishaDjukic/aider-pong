@@ -145,10 +145,6 @@ class Game:
         timer_font = pygame.font.Font(None, 74)
         timer_surface = timer_font.render(str(self.timer), True, (255, 255, 255))
         timer_x = (screen_width // 2) - (timer_surface.get_width() // 2)
-        # Draw a thick circle around the timer text
-        circle_center = (timer_x + timer_surface.get_width() // 2, 10 + timer_surface.get_height() // 2)
-        circle_radius = max(timer_surface.get_width(), timer_surface.get_height()) // 2 + 10  # Adjust the radius as needed
-        pygame.draw.circle(self.screen, (255, 255, 255), circle_center, circle_radius, 5)  # 5 is the thickness of the circle
 
         self.screen.blit(timer_surface, (timer_x, 10))
 
