@@ -56,6 +56,10 @@ class Game:
                 new_ball.speed_x = ball.speed_x
                 new_ball.speed_y = random.choice([-4, 4])
                 self.balls.append(new_ball)
+                if ball.last_deflected_by == "paddle1":
+                    self.score1 += 1
+                elif ball.last_deflected_by == "paddle2":
+                    self.score2 += 1
                 self.powerup.move()
 
         if pygame.time.get_ticks() - self.powerup.spawn_time > 15000:
