@@ -10,6 +10,8 @@ class Game:
         self.background_image = pygame.image.load('background.png')
         self.score1 = 0
         self.score2 = 0
+        self.timer = 60
+        self.last_timer_update = pygame.time.get_ticks()
         self.paddle1 = Paddle(30, 334)  # Centered vertically
         self.paddle2 = Paddle(984, 334)  # Centered vertically
         self.balls = [Ball(502, 374)]  # Centered horizontally and vertically
@@ -39,6 +41,9 @@ class Game:
                     new_ball.speed_x = random.choice([-4, 4])
                     new_ball.speed_y = random.choice([-4, 4])
                     self.balls.append(new_ball)
+            if ball.color == (255, 255, 255):
+                self.timer = 60
+                self.last_timer_update = pygame.time.get_ticks()
             ball.check_collision(self.paddle1, self.paddle2)
 
             if ball.rect.colliderect(self.powerup.rect):
@@ -51,6 +56,11 @@ class Game:
 
         if pygame.time.get_ticks() - self.powerup.spawn_time > 15000:
             self.powerup.move()
+
+        current_time = pygame.time.get_ticks()
+        if current_time - self.last_timer_update >= 1000:
+            self.timer -= 1
+            self.last_timer_update = current_time
 
     def draw(self):
         # Draw the scores with shadow
@@ -102,6 +112,12 @@ class Game:
         overlay = pygame.Surface(self.screen.get_size(), pygame.SRCALPHA)
         overlay.fill((0, 0, 0, 128))  # 128 is 50% transparency
         self.screen.blit(overlay, (0, 0))
+
+        # Draw the countdown timer
+        timer_font = pygame.font.Font(None, 74)
+        timer_surface = timer_font.render(str(self.timer), True, (255, 255, 255))
+        timer_x = (screen_width // 2) - (timer_surface.get_width() // 2)
+        self.screen.blit(timer_surface, (timer_x, 10))
 
         self.paddle1.draw(self.screen, base_color=(137, 207, 240))  # Baby blue
         self.paddle2.draw(self.screen, base_color=(0, 128, 0))  # Grass green
