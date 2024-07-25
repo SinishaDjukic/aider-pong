@@ -33,7 +33,7 @@ class Game:
         else:
             self.paddle2.move(up=None)
 
-        if self.score1 >= 5 or self.score2 >= 5:
+        if self.score1 >= 100 or self.score2 >= 100:
             self.display_winner()
             return
 
@@ -134,7 +134,7 @@ class Game:
 
     def display_winner(self):
         font = pygame.font.Font(None, 150)
-        if self.score1 >= 5:
+        if self.score1 >= 100:
             winner_text = "BLUE WINS!"
             color = (137, 207, 240)  # Baby blue
         else:
