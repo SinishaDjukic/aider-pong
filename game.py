@@ -80,6 +80,9 @@ class Game:
             self.last_timer_update = current_time
             if self.timer <= 0:
                 new_obstacle = Obstacle()
+                # Ensure the new obstacle does not overlap with existing obstacles
+                while any(new_obstacle.rect.colliderect(obstacle.rect) for obstacle in self.obstacles):
+                    new_obstacle = Obstacle()
                 self.obstacles.append(new_obstacle)
                 for ball in self.balls:
                     ball.obstacles = self.obstacles

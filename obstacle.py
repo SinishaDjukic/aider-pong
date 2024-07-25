@@ -3,7 +3,10 @@ import random
 
 class Obstacle:
     def __init__(self):
-        self.rect = pygame.Rect(random.randint(100, 974), random.randint(50, 718), 50, 50)
+        screen_width = 1024
+        left_bound = int(screen_width * 0.2)
+        right_bound = int(screen_width * 0.8)
+        self.rect = pygame.Rect(random.randint(left_bound, right_bound - 50), random.randint(50, 718), 50, 50)
         self.color = (245, 245, 220)  # Beige color
 
     def draw(self, screen):
