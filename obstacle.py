@@ -4,7 +4,7 @@ import random
 class Obstacle:
     def __init__(self):
         self.rect = pygame.Rect(random.randint(100, 974), random.randint(50, 718), 50, 50)
-        self.color = (128, 0, 0)  # Red burgundy color
+        self.color = (245, 245, 220)  # Beige color
 
     def draw(self, screen):
         # Draw the shadow
