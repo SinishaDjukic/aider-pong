@@ -33,6 +33,10 @@ class Game:
         else:
             self.paddle2.move(up=None)
 
+        if self.score1 >= 50 or self.score2 >= 50:
+            self.display_winner()
+            return
+
         for ball in self.balls:
             result = ball.move()
             if result == "left" or result == "right":
@@ -90,7 +94,39 @@ class Game:
                     ball.obstacles = self.obstacles
                 self.timer = 10
 
-    def draw(self):
+    def display_winner(self):
+        font = pygame.font.Font(None, 150)
+        if self.score1 >= 50:
+            winner_text = "BLUE WINS!"
+            color = (137, 207, 240)  # Baby blue
+        else:
+            winner_text = "GREEN WINS!"
+            color = (0, 255, 0)  # Bright green
+
+        text_surface = font.render(winner_text, True, color)
+        text_rect = text_surface.get_rect(center=(self.screen.get_width() // 2, self.screen.get_height() // 2))
+
+        self.screen.blit(text_surface, text_rect)
+        pygame.display.flip()
+
+        # Wait for key press to restart the game
+        waiting = True
+        while waiting:
+            for event in pygame.event.get():
+                if event.type == pygame.KEYDOWN:
+                    waiting = False
+        self.reset_game()
+
+    def reset_game(self):
+        self.score1 = 0
+        self.score2 = 0
+        self.timer = 10
+        self.last_timer_update = pygame.time.get_ticks()
+        self.paddle1 = Paddle(30, 334)  # Centered vertically
+        self.paddle2 = Paddle(984, 334)  # Centered vertically
+        self.obstacles = []
+        self.balls = [Ball(502, 374, obstacles=self.obstacles)]  # Centered horizontally and vertically
+        self.powerup = PowerUp()
         # Draw the scores with shadow
         font = pygame.font.Font(None, 74)
         score1_surface = font.render(str(self.score1), True, (255, 255, 255))
