@@ -7,22 +7,6 @@ def main():
     pygame.init()
     screen = pygame.display.set_mode((1024, 768))
     pygame.display.set_caption("Pong Game")
-    game = Game(screen)
-
-    running = True
-    while running:
-        for event in pygame.event.get():
-            if event.type == pygame.QUIT:
-                running = False
-
-        game.update()
-        game.draw()
-        pygame.display.flip()
-
-    pygame.quit()
-    pygame.init()
-    screen = pygame.display.set_mode((1024, 768))
-    pygame.display.set_caption("Pong Game")
     clock = pygame.time.Clock()
     game = Game(screen)
 
