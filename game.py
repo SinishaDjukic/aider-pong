@@ -39,11 +39,14 @@ class Game:
                     self.score1 += 1
                 else:
                     self.score2 += 1
-                self.balls.remove(ball)
-                # Ensure only one white ball exists
-                if not any(b.color == (255, 255, 255) for b in self.balls):
-                    self.balls.append(Ball(502, 374, obstacles=self.obstacles))  # Re-spawn the ball at the center
-                self.timer = 10
+                if ball.color == (255, 255, 255):
+                    self.balls.remove(ball)
+                    # Ensure only one white ball exists
+                    if not any(b.color == (255, 255, 255) for b in self.balls):
+                        self.balls.append(Ball(502, 374, obstacles=self.obstacles))  # Re-spawn the ball at the center
+                    self.timer = 10
+                else:
+                    self.balls.remove(ball)
             ball.check_collision(self.paddle1, self.paddle2)
 
             if ball.rect.colliderect(self.powerup.rect) and ball.color == (255, 255, 255):
