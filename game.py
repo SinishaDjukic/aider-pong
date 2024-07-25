@@ -36,6 +36,7 @@ class Game:
                 else:
                     self.score2 += 1
                 self.balls.remove(ball)
+                self.balls.append(Ball(502, 374))  # Re-spawn the ball at the center
                 self.timer = 30
             ball.check_collision(self.paddle1, self.paddle2)
 
