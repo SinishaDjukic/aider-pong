@@ -64,6 +64,7 @@ class Game:
             self.last_timer_update = current_time
             if self.timer <= 0:
                 self.obstacles.append(Obstacle())
+                self.obstacles.append(Obstacle())
                 self.timer = 10
 
     def draw(self):
