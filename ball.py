@@ -20,8 +20,8 @@ class Ball:
             return "right"
         elif self.rect.right >= 1024:
             return "left"
-        if ball_center_y <= 0:
-            self.rect.y = 0  # Correct the position to avoid sticking
+        if self.rect.top <= 0:
+            self.rect.top = 0  # Correct the position to avoid sticking
             self.speed_y = -self.speed_y
         elif ball_center_y >= 768:
             self.rect.y = 768  # Correct the position to avoid sticking
