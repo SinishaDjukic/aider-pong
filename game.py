@@ -110,8 +110,8 @@ class Game:
         self.powerup.draw(self.screen)
         font = pygame.font.Font(None, 74)
         
-        score_text1 = font.render(str(self.score1), 1, (137, 207, 240))  # Baby blue
-        score_text2 = font.render(str(self.score2), 1, (0, 128, 0))  # Grass green
+        score_text1 = font.render(str(self.score1), 1, (255, 255, 255))  # White
+        score_text2 = font.render(str(self.score2), 1, (255, 255, 255))  # White
         score_text1_x = (screen_width // 4) - (score_text1.get_width() // 2)
         score_text2_x = (3 * screen_width // 4) - (score_text2.get_width() // 2)
         
