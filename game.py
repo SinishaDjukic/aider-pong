@@ -53,12 +53,11 @@ class Game:
             self.powerup.move()
 
     def draw(self):
-        # Draw the scores without shadow
+        # Draw the scores with shadow
         font = pygame.font.Font(None, 74)
         score1_surface = font.render(str(self.score1), True, (255, 255, 255))
         score2_surface = font.render(str(self.score2), True, (255, 255, 255))
 
-        # Draw the scores with shadow
         shadow_offset = 5
         shadow_color = (0, 0, 0, 128)  # Black shadow with 50% transparency
 
