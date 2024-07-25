@@ -6,6 +6,7 @@ class Ball:
         self.last_deflected_by = None  # Track the last user who deflected the ball
         self.rect = pygame.Rect(x, y, 20, 20)
         self.color = color
+        self.radius = self.rect.width // 2  # Assuming the ball is a circle and width equals height
         self.speed_x = random.choice([-4, 4])
         self.obstacles = obstacles if obstacles is not None else []
         self.speed_y = random.choice([-4, 4])
@@ -14,7 +15,6 @@ class Ball:
         self.rect.x += self.speed_x
         self.rect.y += self.speed_y
 
-        ball_center_y = self.rect.centery
 
         if self.rect.left <= 0:
             return "right"
