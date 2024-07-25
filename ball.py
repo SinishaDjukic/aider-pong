@@ -26,9 +26,6 @@ class Ball:
             self.speed_y = -self.speed_y
         elif ball_center_y + ball_radius >= 768:
             self.rect.y = 768 - ball_radius  # Correct the position to avoid sticking
-        elif ball_center_y + ball_radius >= 768:
-            self.rect.y = 768 - ball_radius  # Correct the position to avoid sticking
-            self.speed_y = -self.speed_y
             self.speed_y = -self.speed_y
 
         for obstacle in self.obstacles:
