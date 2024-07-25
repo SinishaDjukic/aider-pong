@@ -60,8 +60,10 @@ class Game:
                 self.balls.append(new_ball)
                 if ball.last_deflected_by == "paddle1":
                     self.score1 += 1
+                    self.paddle1.rect.height += 10
                 elif ball.last_deflected_by == "paddle2":
                     self.score2 += 1
+                    self.paddle2.rect.height += 10
                 if ball.last_deflected_by == "paddle1":
                     self.score1 += 1
                     self.paddle1.rect.height += 10
