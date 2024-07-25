@@ -30,11 +30,16 @@ class Ball:
         for obstacle in self.obstacles:
             if self.rect.colliderect(obstacle.rect):
                 if abs(self.rect.right - obstacle.rect.left) < abs(self.rect.bottom - obstacle.rect.top) and abs(self.rect.right - obstacle.rect.left) < abs(self.rect.top - obstacle.rect.bottom):
+                    self.rect.right = obstacle.rect.left
                     self.speed_x = -self.speed_x
                 elif abs(self.rect.left - obstacle.rect.right) < abs(self.rect.bottom - obstacle.rect.top) and abs(self.rect.left - obstacle.rect.right) < abs(self.rect.top - obstacle.rect.bottom):
+                    self.rect.left = obstacle.rect.right
                     self.speed_x = -self.speed_x
-                    if self.color == (255, 255, 255):
-                        self.last_deflected_by = "paddle2"
+                elif abs(self.rect.bottom - obstacle.rect.top) < abs(self.rect.right - obstacle.rect.left) and abs(self.rect.bottom - obstacle.rect.top) < abs(self.rect.left - obstacle.rect.right):
+                    self.rect.bottom = obstacle.rect.top
+                    self.speed_y = -self.speed_y
+                elif abs(self.rect.top - obstacle.rect.bottom) < abs(self.rect.right - obstacle.rect.left) and abs(self.rect.top - obstacle.rect.bottom) < abs(self.rect.left - obstacle.rect.right):
+                    self.rect.top = obstacle.rect.bottom
                     self.speed_y = -self.speed_y
                 return None
 
