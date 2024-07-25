@@ -170,26 +170,15 @@ class Game:
         self.obstacles = []
         self.balls = [Ball(502, 374, obstacles=self.obstacles)]  # Centered horizontally and vertically
         self.powerup = PowerUp()
-        # Draw the scores with shadow
+        # Draw the scores without shadow
         font = pygame.font.Font(None, 74)
-        score1_surface = font.render(str(self.score1), True, (255, 255, 255))
-        score2_surface = font.render(str(self.score2), True, (255, 255, 255))
+        score1_surface = font.render(str(self.score1), True, (255, 255, 255))  # White
+        score2_surface = font.render(str(self.score2), True, (255, 255, 255))  # White
 
-        shadow_offset = 5
-        shadow_color = (0, 0, 0, 128)  # Black shadow with 50% transparency
-
-        # Create shadow surfaces
-        shadow_surface1 = font.render(str(self.score1), True, shadow_color)
-        shadow_surface2 = font.render(str(self.score2), True, shadow_color)
-
-        # Blit shadows
         screen_width = self.screen.get_width()
-        score1_x = (screen_width // 4) - (shadow_surface1.get_width() // 2)
-        score2_x = (3 * screen_width // 4) - (shadow_surface2.get_width() // 2)
-        self.screen.blit(shadow_surface1, (score1_x + shadow_offset, 50 + shadow_offset))
-        self.screen.blit(shadow_surface2, (score2_x + shadow_offset, 50 + shadow_offset))
+        score1_x = (screen_width // 4) - (score1_surface.get_width() // 2)
+        score2_x = (3 * screen_width // 4) - (score2_surface.get_width() // 2)
 
-        # Blit scores
         self.screen.blit(score1_surface, (score1_x, 50))
         self.screen.blit(score2_surface, (score2_x, 50))
         # Get the dimensions of the screen
@@ -233,12 +222,3 @@ class Game:
         self.powerup.draw(self.screen)
         for obstacle in self.obstacles:
             obstacle.draw(self.screen)
-        font = pygame.font.Font(None, 74)
-        
-        score_text1 = font.render(str(self.score1), 1, (255, 255, 255))  # White
-        score_text2 = font.render(str(self.score2), 1, (255, 255, 255))  # White
-        score_text1_x = (screen_width // 4) - (score_text1.get_width() // 2)
-        score_text2_x = (3 * screen_width // 4) - (score_text2.get_width() // 2)
-        
-        self.screen.blit(score_text1, (score_text1_x, 10))
-        self.screen.blit(score_text2, (score_text2_x, 10))
