@@ -116,9 +116,8 @@ class Game:
         shadow_surface2 = font.render(str(self.score2), True, shadow_color)
         self.screen.blit(shadow_surface1, (50 + shadow_offset, 50 + shadow_offset))
         self.screen.blit(shadow_surface2, (924 + shadow_offset, 50 + shadow_offset))
-        screen_width = self.screen.get_width()
-        score1_x = (screen_width // 4) - (score1_surface.get_width() // 2)
-        score2_x = (3 * screen_width // 4) - (score2_surface.get_width() // 2)
+        self.screen.blit(shadow_surface1, (score1_x + shadow_offset, 50 + shadow_offset))
+        self.screen.blit(shadow_surface2, (score2_x + shadow_offset, 50 + shadow_offset))
         self.screen.blit(score1_surface, (score1_x, 50))
         self.screen.blit(score2_surface, (score2_x, 50))
 
