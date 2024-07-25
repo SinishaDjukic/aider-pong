@@ -24,8 +24,8 @@ class Ball:
                     self.speed_x = -self.speed_x
                 elif abs(self.rect.left - obstacle.rect.right) < abs(self.rect.bottom - obstacle.rect.top) and abs(self.rect.left - obstacle.rect.right) < abs(self.rect.top - obstacle.rect.bottom):
                     self.speed_x = -self.speed_x
-                    if ball.color == (255, 255, 255):
-                        ball.last_deflected_by = "paddle2"
+                    if self.color == (255, 255, 255):
+                        self.last_deflected_by = "paddle2"
                     self.speed_y = -self.speed_y
                 return None
 
@@ -46,8 +46,8 @@ class Ball:
             # Calculate the deflection based on where the ball hits the paddle
             if self.rect.colliderect(paddle1.rect):
                 offset = (self.rect.centery - paddle1.rect.centery) / (paddle1.rect.height / 2)
-                if ball.color == (255, 255, 255):
-                    ball.last_deflected_by = "paddle1"
+                if self.color == (255, 255, 255):
+                    self.last_deflected_by = "paddle1"
                 offset = (self.rect.centery - paddle2.rect.centery) / (paddle2.rect.height / 2)
             
             # Apply curvature effect: the closer to the edge, the larger the deflection
