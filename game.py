@@ -113,8 +113,8 @@ class Game:
 
         # Draw the scores without shadow
         font = pygame.font.Font(None, 74)
-        score1_surface = font.render(str(self.score1), True, (255, 255, 255))  # White
-        score2_surface = font.render(str(self.score2), True, (255, 255, 255))  # White
+        score1_surface = font.render(str(self.score1), True, (137, 207, 240))  # Baby blue
+        score2_surface = font.render(str(self.score2), True, (0, 255, 0))  # Bright green
 
         screen_width = self.screen.get_width()
         score1_x = (screen_width // 4) - (score1_surface.get_width() // 2)
@@ -167,8 +167,8 @@ class Game:
         self.powerup = PowerUp()
         # Draw the scores without shadow
         font = pygame.font.Font(None, 74)
-        score1_surface = font.render(str(self.score1), True, (255, 255, 255))  # White
-        score2_surface = font.render(str(self.score2), True, (255, 255, 255))  # White
+        score1_surface = font.render(str(self.score1), True, (137, 207, 240))  # Baby blue
+        score2_surface = font.render(str(self.score2), True, (0, 255, 0))  # Bright green
 
         screen_width = self.screen.get_width()
         score1_x = (screen_width // 4) - (score1_surface.get_width() // 2)
