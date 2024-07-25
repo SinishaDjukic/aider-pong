@@ -43,6 +43,8 @@ class Game:
                 if ball.color == (255, 255, 255):
                     print(f"Last deflected by: {ball.last_deflected_by}")
                     self.balls.remove(ball)
+                    self.paddle1.rect.height = 100  # Reset paddle1 size to default
+                    self.paddle2.rect.height = 100  # Reset paddle2 size to default
                     # Ensure only one white ball exists
                     if not any(b.color == (255, 255, 255) for b in self.balls):
                         self.balls.append(Ball(502, 374, obstacles=self.obstacles))  # Re-spawn the ball at the center
