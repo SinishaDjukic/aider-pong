@@ -3,6 +3,7 @@ import random
 from paddle import Paddle
 from powerup import PowerUp
 from ball import Ball
+from obstacle import Obstacle
 
 class Game:
     def __init__(self, screen):
@@ -16,6 +17,7 @@ class Game:
         self.paddle2 = Paddle(984, 334)  # Centered vertically
         self.balls = [Ball(502, 374)]  # Centered horizontally and vertically
         self.powerup = PowerUp()
+        self.obstacles = []
 
     def update(self):
         keys = pygame.key.get_pressed()
@@ -56,6 +58,9 @@ class Game:
         if current_time - self.last_timer_update >= 1000:
             self.timer -= 1
             self.last_timer_update = current_time
+            if self.timer <= 0:
+                self.obstacles.append(Obstacle())
+                self.timer = 30
 
     def draw(self):
         # Draw the scores with shadow
@@ -119,6 +124,8 @@ class Game:
         for ball in self.balls:
             ball.draw(self.screen)
         self.powerup.draw(self.screen)
+        for obstacle in self.obstacles:
+            obstacle.draw(self.screen)
         font = pygame.font.Font(None, 74)
         
         score_text1 = font.render(str(self.score1), 1, (255, 255, 255))  # White

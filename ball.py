@@ -16,7 +16,11 @@ class Ball:
             return "right"
         elif self.rect.right >= 1024:
             return "left"
-        return None
+        for obstacle in self.obstacles:
+            if self.rect.colliderect(obstacle.rect):
+                self.speed_x = -self.speed_x
+                self.speed_y = -self.speed_y
+                return None
 
     def draw(self, screen):
         # Draw the shadow
