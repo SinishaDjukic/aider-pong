@@ -4,9 +4,9 @@ class Paddle:
     def __init__(self, x, y):
         self.rect = pygame.Rect(x, y, 10, 100)
         self.speed = 0
-        self.max_speed = 10
-        self.acceleration = 1
-        self.deceleration = 1
+        self.max_speed = 20
+        self.acceleration = 2
+        self.deceleration = 2
 
     def move(self, up=None):
         if up is not None:
