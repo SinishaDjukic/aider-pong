@@ -62,10 +62,8 @@ class Game:
             self.timer -= 1
             self.last_timer_update = current_time
             if self.timer <= 0:
-                new_obstacle1 = Obstacle()
-                new_obstacle2 = Obstacle()
-                self.obstacles.append(new_obstacle1)
-                self.obstacles.append(new_obstacle2)
+                new_obstacle = Obstacle()
+                self.obstacles.append(new_obstacle)
                 for ball in self.balls:
                     ball.obstacles = self.obstacles
                 self.timer = 10
