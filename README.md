@@ -56,6 +56,7 @@ python main.py
 
 # Takeways from Aider Chat
 - LLM: The code was generated using OpenAI GPT-4o - seems to work very well with Aider
+- Dev experience: understands instructions for code modification based on desired functionality changes (indirect), as well as code/line specific instructions (direct). All code changes generate git diffs in the console and are committed (with auto-generated comments) to the local repo, which makes changes very transparent and understandable
 - Cost: Total USD spent up until the initial code commit: ~7 USD
 - Time:
   - Total time spent CHOPping (Chat-Oriented Programming) until the initial code commit: <3h
