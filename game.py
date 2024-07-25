@@ -94,6 +94,53 @@ class Game:
                     ball.obstacles = self.obstacles
                 self.timer = 10
 
+    def draw(self):
+        # Draw the background image
+        screen_width, screen_height = self.screen.get_size()
+        bg_width, bg_height = self.background_image.get_size()
+        scale_factor = max(screen_width / bg_width, screen_height / bg_height)
+        new_bg_width = int(bg_width * scale_factor)
+        new_bg_height = int(bg_height * scale_factor)
+        scaled_background = pygame.transform.scale(self.background_image, (new_bg_width, new_bg_height))
+        bg_x = (screen_width - new_bg_width) // 2
+        bg_y = (screen_height - new_bg_height) // 2
+        self.screen.blit(scaled_background, (bg_x, bg_y))
+
+        # Draw the scores with shadow
+        font = pygame.font.Font(None, 74)
+        score1_surface = font.render(str(self.score1), True, (255, 255, 255))
+        score2_surface = font.render(str(self.score2), True, (255, 255, 255))
+        shadow_offset = 5
+        shadow_color = (0, 0, 0, 128)  # Black shadow with 50% transparency
+        shadow_surface1 = font.render(str(self.score1), True, shadow_color)
+        shadow_surface2 = font.render(str(self.score2), True, shadow_color)
+        self.screen.blit(shadow_surface1, (50 + shadow_offset, 50 + shadow_offset))
+        self.screen.blit(shadow_surface2, (924 + shadow_offset, 50 + shadow_offset))
+        screen_width = self.screen.get_width()
+        score1_x = (screen_width // 4) - (score1_surface.get_width() // 2)
+        score2_x = (3 * screen_width // 4) - (score2_surface.get_width() // 2)
+        self.screen.blit(score1_surface, (score1_x, 50))
+        self.screen.blit(score2_surface, (score2_x, 50))
+
+        # Create a semi-transparent black overlay
+        overlay = pygame.Surface(self.screen.get_size(), pygame.SRCALPHA)
+        overlay.fill((0, 0, 0, 128))  # 128 is 50% transparency
+        self.screen.blit(overlay, (0, 0))
+
+        # Draw the countdown timer
+        timer_font = pygame.font.Font(None, 74)
+        timer_surface = timer_font.render(str(self.timer), True, (255, 255, 255))
+        timer_x = (screen_width // 2) - (timer_surface.get_width() // 2)
+        self.screen.blit(timer_surface, (timer_x, 10))
+
+        self.paddle1.draw(self.screen, base_color=(137, 207, 240))  # Baby blue
+        self.paddle2.draw(self.screen, base_color=(0, 255, 0))  # Bright green
+        for ball in self.balls:
+            ball.draw(self.screen)
+        self.powerup.draw(self.screen)
+        for obstacle in self.obstacles:
+            obstacle.draw(self.screen)
+
     def display_winner(self):
         font = pygame.font.Font(None, 150)
         if self.score1 >= 50:
