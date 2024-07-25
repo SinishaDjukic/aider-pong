@@ -39,11 +39,7 @@ class Game:
                 else:
                     self.score2 += 1
                 self.balls.remove(ball)
-                # Ensure only one white ball exists
-                if not any(b.color == (255, 255, 255) for b in self.balls):
-                    self.balls.append(Ball(502, 374, obstacles=self.obstacles))  # Re-spawn the ball at the center
-                else:
-                    self.balls.append(Ball(502, 374, obstacles=self.obstacles, color=(255, 165, 0)))  # Duck orange
+                self.balls.append(Ball(502, 374, obstacles=self.obstacles))  # Re-spawn the ball at the center
                 self.timer = 10
             ball.check_collision(self.paddle1, self.paddle2)
 
