@@ -25,7 +25,7 @@ class Game:
         keys = pygame.key.get_pressed()
         if keys[pygame.K_w] or keys[pygame.K_s]:
             self.paddle1.move(up=keys[pygame.K_w])
-        elif self.score2 >= 5:
+        else:
             self.paddle1.move(up=None)
 
         if keys[pygame.K_UP] or keys[pygame.K_DOWN]:

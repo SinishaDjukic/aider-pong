@@ -40,12 +40,6 @@ class Paddle:
             self.rect.bottom = 768
             self.speed = 0
 
-        # Apply deceleration when no key is pressed
-        if not up and not self.rect.bottom < 768:
-            if self.speed > 0:
-                self.speed = max(self.speed - self.deceleration, 0)
-            elif self.speed < 0:
-                self.speed = min(self.speed + self.deceleration, 0)
 
     def draw(self, screen, base_color=(255, 255, 255), shadow_color=(50, 50, 50), shadow_offset=(5, 5)):
         # Draw the shadow
