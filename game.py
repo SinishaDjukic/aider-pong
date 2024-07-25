@@ -47,16 +47,11 @@ class Game:
                 self.timer = 30
             ball.check_collision(self.paddle1, self.paddle2)
 
-            if ball.rect.colliderect(self.powerup.rect):
-                # Ensure only one white ball exists
-                if not any(b.color == (255, 255, 255) for b in self.balls):
-                    new_ball = Ball(ball.rect.x, ball.rect.y, obstacles=self.obstacles)
-                else:
-                    new_ball = Ball(ball.rect.x, ball.rect.y, obstacles=self.obstacles, color=(255, 165, 0))  # Duck orange
+            if ball.rect.colliderect(self.powerup.rect) and ball.color == (255, 255, 255):
+                new_ball = Ball(ball.rect.x, ball.rect.y, obstacles=self.obstacles, color=(255, 165, 0))  # Duck orange
                 new_ball.speed_x = ball.speed_x
                 new_ball.speed_y = random.choice([-4, 4])
                 self.balls.append(new_ball)
-                self.balls[-1].color = (255, 165, 0)  # Duck orange
                 self.powerup.move()
 
         if pygame.time.get_ticks() - self.powerup.spawn_time > 15000:
