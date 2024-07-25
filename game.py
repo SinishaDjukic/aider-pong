@@ -118,11 +118,6 @@ class Game:
         self.screen.blit(score1_surface, (score1_x, 50))
         self.screen.blit(score2_surface, (score2_x, 50))
 
-        # Create a semi-transparent black overlay
-        overlay = pygame.Surface(self.screen.get_size(), pygame.SRCALPHA)
-        overlay.fill((0, 0, 0, 128))  # 128 is 50% transparency
-        self.screen.blit(overlay, (0, 0))
-
         # Draw the countdown timer
         timer_font = pygame.font.Font(None, 74)
         timer_surface = timer_font.render(str(self.timer), True, (255, 255, 255))
