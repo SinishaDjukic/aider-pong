@@ -23,10 +23,18 @@ class Game:
         obstacles = []
         for _ in range(num_obstacles):
             new_obstacle = Obstacle()
-            while any(new_obstacle.rect.colliderect(obstacle.rect) for obstacle in obstacles):
+            while any(self.lines_intersect(new_obstacle, obstacle) for obstacle in obstacles):
                 new_obstacle = Obstacle()
             obstacles.append(new_obstacle)
         return obstacles
+
+    def lines_intersect(self, line1, line2):
+        def ccw(A, B, C):
+            return (C[1]-A[1]) * (B[0]-A[0]) > (B[1]-A[1]) * (C[0]-A[0])
+
+        A, B = line1.start, line1.end
+        C, D = line2.start, line2.end
+        return ccw(A,C,D) != ccw(B,C,D) and ccw(A,B,C) != ccw(A,B,D)
 
     def update(self):
         keys = pygame.key.get_pressed()
@@ -113,7 +121,7 @@ class Game:
             if self.obstacle_timer <= 0:
                 new_obstacle = Obstacle()
                 # Ensure the new obstacle does not overlap with existing obstacles
-                while any(new_obstacle.rect.colliderect(obstacle.rect) for obstacle in self.obstacles):
+                while any(self.lines_intersect(new_obstacle, obstacle) for obstacle in self.obstacles):
                     new_obstacle = Obstacle()
                 self.obstacles.append(new_obstacle)
                 for ball in self.balls:
