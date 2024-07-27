@@ -40,10 +40,18 @@ class Game:
         for ball in self.balls:
             result = ball.move()
             if result == "left" or result == "right":
-                if result == "left":
-                    self.score1 += 1
+                if ball.color == (255, 255, 255):  # White ball
+                    score = 10
+                elif ball.color == (255, 165, 0):  # Orange ball
+                    score = 5
                 else:
-                    self.score2 += 1
+                    score = 1  # Default score for any other color
+
+                if result == "left":
+                    self.score2 += score
+                else:
+                    self.score1 += score
+
                 if ball.color == (255, 255, 255):
                     print(f"Last deflected by: {ball.last_deflected_by}")
                     self.balls.remove(ball)
