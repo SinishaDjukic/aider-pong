@@ -4,9 +4,9 @@ class Paddle:
     def __init__(self, x, y):
         self.rect = pygame.Rect(x, y, 10, 100)
         self.speed = 0
-        self.max_speed = 5  # Reduced for even slower movement
-        self.acceleration = 0.5  # Further reduced for smoother acceleration
-        self.deceleration = 0.5  # Further reduced for smoother deceleration
+        self.max_speed = 3  # Further reduced for slower movement
+        self.acceleration = 0.3  # Further reduced for smoother acceleration
+        self.deceleration = 0.3  # Further reduced for smoother deceleration
 
     def move(self, up=None):
         if up is not None:
