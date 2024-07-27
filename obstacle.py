@@ -18,11 +18,14 @@ class Obstacle:
         rotated_surface = pygame.transform.rotate(self.surface, self.angle)
         rotated_rect = rotated_surface.get_rect(center=self.rect.center)
 
-        # Draw the shadow
-        shadow_surface = pygame.Surface(rotated_surface.get_size(), pygame.SRCALPHA)
+        # Create and rotate the shadow surface
+        shadow_surface = pygame.Surface(self.surface.get_size(), pygame.SRCALPHA)
         shadow_surface.fill((50, 50, 50, 128))  # 128 is 50% transparency
-        shadow_rect = shadow_surface.get_rect(center=(rotated_rect.centerx + 5, rotated_rect.centery + 5))
-        screen.blit(shadow_surface, shadow_rect.topleft)
+        rotated_shadow = pygame.transform.rotate(shadow_surface, self.angle)
+        shadow_rect = rotated_shadow.get_rect(center=(rotated_rect.centerx + 5, rotated_rect.centery + 5))
+
+        # Draw the rotated shadow
+        screen.blit(rotated_shadow, shadow_rect.topleft)
         
         # Draw the rotated obstacle
         screen.blit(rotated_surface, rotated_rect.topleft)
