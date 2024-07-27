@@ -9,9 +9,16 @@ class Ball:
         self.color = color
         self.radius = self.rect.width // 2  # Assuming the ball is a circle and width equals height
         self.speed = 5  # Constant speed
-        angle = random.uniform(0, 2 * math.pi)
-        self.speed_x = self.speed * math.cos(angle)
+        
+        # Choose a random angle between -45 and 45 degrees
+        angle = math.radians(random.uniform(-45, 45))
+        
+        # Randomly choose left or right direction
+        direction = random.choice([-1, 1])
+        
+        self.speed_x = direction * self.speed * math.cos(angle)
         self.speed_y = self.speed * math.sin(angle)
+        
         self.obstacles = obstacles if obstacles is not None else []
 
     def normalize_speed(self):
