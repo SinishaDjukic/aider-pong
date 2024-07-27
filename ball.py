@@ -8,18 +8,26 @@ class Ball:
         self.rect = pygame.Rect(x, y, 20, 20)
         self.color = color
         self.radius = self.rect.width // 2  # Assuming the ball is a circle and width equals height
-        self.speed_x = random.choice([-4, 4])
-        self.speed_y = random.choice([-4, 4])
+        self.speed = 5  # Constant speed
+        angle = random.uniform(0, 2 * math.pi)
+        self.speed_x = self.speed * math.cos(angle)
+        self.speed_y = self.speed * math.sin(angle)
         self.obstacles = obstacles if obstacles is not None else []
 
+    def normalize_speed(self):
+        magnitude = math.sqrt(self.speed_x**2 + self.speed_y**2)
+        if magnitude != 0:
+            self.speed_x = (self.speed_x / magnitude) * self.speed
+            self.speed_y = (self.speed_y / magnitude) * self.speed
+
     def increase_speed(self):
-        self.speed_x *= 1.05
-        self.speed_y *= 1.05
-        self.speed_y = random.choice([-4, 4])
+        self.speed *= 1.05
+        self.normalize_speed()
 
     def move(self):
         self.rect.x += self.speed_x
         self.rect.y += self.speed_y
+        self.normalize_speed()
 
 
         if self.rect.left <= 0:
@@ -77,3 +85,4 @@ class Ball:
             # Apply curvature effect: the closer to the edge, the larger the deflection
             self.speed_x = -self.speed_x
             self.speed_y += offset * 5  # Adjust the multiplier as needed for desired effect
+            self.normalize_speed()
