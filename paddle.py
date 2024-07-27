@@ -3,7 +3,7 @@ import pygame
 class Paddle:
     def __init__(self, x, y):
         self.rect = pygame.Rect(x, y, 10, 100)
-        self.speed = 2  # Reduced speed by 60% (5 * 0.4 = 2)
+        self.speed = 1  # Reduced speed by 50% (2 * 0.5 = 1)
 
     def move(self, up=None):
         if up is not None:
