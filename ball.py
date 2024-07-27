@@ -64,89 +64,60 @@ class Ball:
                     self.speed_x = 0.5 if random.random() < 0.5 else -0.5  # Add a small horizontal component
 
             for obstacle in self.obstacles:
-                side_hit = self.check_rotated_collision(obstacle)
-                if side_hit:
-                    self.handle_rotated_collision(obstacle, side_hit)
+                collision_point = self.check_line_collision(obstacle)
+                if collision_point:
+                    self.handle_line_collision(obstacle, collision_point)
                     self.increase_speed()  # Increase the ball's speed after hitting an obstacle
                     return None
 
         self.normalize_speed()
 
-    def check_rotated_collision(self, obstacle):
-        # Get the obstacle's center and create a vector from it to the ball's center
-        obstacle_center = obstacle.rect.center
-        ball_center = self.rect.center
-        relative_vector = (ball_center[0] - obstacle_center[0], ball_center[1] - obstacle_center[1])
-
-        # Rotate the vector by the negative of the obstacle's angle
-        angle_rad = math.radians(-obstacle.angle)
-        rotated_vector = (
-            relative_vector[0] * math.cos(angle_rad) - relative_vector[1] * math.sin(angle_rad),
-            relative_vector[0] * math.sin(angle_rad) + relative_vector[1] * math.cos(angle_rad)
+    def check_line_collision(self, obstacle):
+        # Vector from line start to end
+        line_vec = (obstacle.end[0] - obstacle.start[0], obstacle.end[1] - obstacle.start[1])
+        
+        # Vector from line start to ball center
+        to_ball = (self.rect.centerx - obstacle.start[0], self.rect.centery - obstacle.start[1])
+        
+        # Project to_ball onto line_vec
+        line_length_squared = line_vec[0]**2 + line_vec[1]**2
+        t = max(0, min(1, (to_ball[0]*line_vec[0] + to_ball[1]*line_vec[1]) / line_length_squared))
+        
+        # Calculate the closest point on the line
+        closest_point = (
+            obstacle.start[0] + t * line_vec[0],
+            obstacle.start[1] + t * line_vec[1]
         )
-
-        # Check if the rotated point is near the obstacle's edges, considering the ball's radius
-        half_width = obstacle.rect.width / 2
-        half_height = obstacle.rect.height / 2
-        x_distance = abs(rotated_vector[0]) - half_width
-        y_distance = abs(rotated_vector[1]) - half_height
-
-        if x_distance <= self.radius and abs(rotated_vector[1]) <= half_height:
-            return "left" if rotated_vector[0] < 0 else "right"
-        elif y_distance <= self.radius and abs(rotated_vector[0]) <= half_width:
-            return "top" if rotated_vector[1] < 0 else "bottom"
-        elif math.sqrt(x_distance**2 + y_distance**2) <= self.radius:
-            # Corner collision
-            return "corner"
+        
+        # Check if the distance from the ball to the closest point is less than the ball's radius
+        dx = self.rect.centerx - closest_point[0]
+        dy = self.rect.centery - closest_point[1]
+        distance_squared = dx**2 + dy**2
+        
+        if distance_squared <= self.radius**2:
+            return closest_point
         return None
 
-    def handle_rotated_collision(self, obstacle, side_hit):
-        # Calculate the obstacle's center
-        obstacle_center = obstacle.rect.center
+    def handle_line_collision(self, obstacle, collision_point):
+        # Calculate the normal vector of the line
+        line_vec = (obstacle.end[0] - obstacle.start[0], obstacle.end[1] - obstacle.start[1])
+        line_normal = (-line_vec[1], line_vec[0])
+        length = math.sqrt(line_normal[0]**2 + line_normal[1]**2)
+        line_normal = (line_normal[0] / length, line_normal[1] / length)
         
-        # Calculate the vector from the obstacle's center to the ball's center
-        to_ball = (self.rect.centerx - obstacle_center[0], self.rect.centery - obstacle_center[1])
-        
-        # Rotate this vector by the negative of the obstacle's angle
-        angle_rad = math.radians(-obstacle.angle)
-        rotated_to_ball = (
-            to_ball[0] * math.cos(angle_rad) - to_ball[1] * math.sin(angle_rad),
-            to_ball[0] * math.sin(angle_rad) + to_ball[1] * math.cos(angle_rad)
-        )
-        
-        # Determine the normal based on the side hit
-        if side_hit == "left":
-            normal = (-1, 0)
-        elif side_hit == "right":
-            normal = (1, 0)
-        elif side_hit == "top":
-            normal = (0, -1)
-        elif side_hit == "bottom":
-            normal = (0, 1)
-        else:  # Corner collision
-            # Normalize the vector from obstacle center to ball center for corner collisions
-            length = math.sqrt(rotated_to_ball[0]**2 + rotated_to_ball[1]**2)
-            normal = (rotated_to_ball[0] / length, rotated_to_ball[1] / length)
-        
-        # Rotate the normal back
-        rotated_normal = (
-            normal[0] * math.cos(-angle_rad) - normal[1] * math.sin(-angle_rad),
-            normal[0] * math.sin(-angle_rad) + normal[1] * math.cos(-angle_rad)
-        )
-        
-        # Calculate the dot product of the ball's velocity and the rotated normal
-        dot_product = self.speed_x * rotated_normal[0] + self.speed_y * rotated_normal[1]
+        # Calculate the dot product of the ball's velocity and the line normal
+        dot_product = self.speed_x * line_normal[0] + self.speed_y * line_normal[1]
 
         # Calculate the reflection vector
-        self.speed_x = self.speed_x - 2 * dot_product * rotated_normal[0]
-        self.speed_y = self.speed_y - 2 * dot_product * rotated_normal[1]
+        self.speed_x = self.speed_x - 2 * dot_product * line_normal[0]
+        self.speed_y = self.speed_y - 2 * dot_product * line_normal[1]
 
-        # Move the ball outside the obstacle
-        overlap = self.radius - math.sqrt((self.rect.centerx - obstacle_center[0])**2 + 
-                                          (self.rect.centery - obstacle_center[1])**2)
+        # Move the ball outside the line
+        overlap = self.radius - math.sqrt((self.rect.centerx - collision_point[0])**2 + 
+                                          (self.rect.centery - collision_point[1])**2)
         if overlap > 0:
-            self.rect.x += rotated_normal[0] * overlap
-            self.rect.y += rotated_normal[1] * overlap
+            self.rect.x += line_normal[0] * overlap
+            self.rect.y += line_normal[1] * overlap
 
     def draw(self, screen):
         # Draw the shadow
