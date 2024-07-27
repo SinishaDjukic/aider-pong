@@ -77,18 +77,25 @@ class Ball:
         offset = 0  # Initialize offset
 
         if self.rect.colliderect(paddle1.rect) or self.rect.colliderect(paddle2.rect):
-            # Calculate the deflection based on where the ball hits the paddle
-            if self.rect.colliderect(paddle1.rect):
-                offset = (self.rect.centery - paddle1.rect.centery) / (paddle1.rect.height / 2)
-                self.last_deflected_by = "paddle1"
-            elif self.rect.colliderect(paddle2.rect):
-                offset = (self.rect.centery - paddle2.rect.centery) / (paddle2.rect.height / 2)
-                self.last_deflected_by = "paddle2"
+            colliding_paddle = paddle1 if self.rect.colliderect(paddle1.rect) else paddle2
+            
+            # Check if the ball hits the top or bottom of the paddle
+            if self.rect.bottom > colliding_paddle.rect.top and self.rect.top < colliding_paddle.rect.bottom:
+                # Side collision
+                offset = (self.rect.centery - colliding_paddle.rect.centery) / (colliding_paddle.rect.height / 2)
+                self.speed_x = -self.speed_x
+            else:
+                # Top or bottom collision
+                self.speed_y = -self.speed_y
+                offset = 0  # No horizontal deflection for top/bottom collisions
+            
+            self.last_deflected_by = "paddle1" if colliding_paddle == paddle1 else "paddle2"
             
             # Clamp the offset between -0.9 and 0.9
             offset = max(-0.9, min(0.9, offset))
             
-            # Apply curvature effect: the closer to the edge, the larger the deflection
-            self.speed_x = -self.speed_x
-            self.speed_y += offset * 5  # Adjust the multiplier as needed for desired effect
+            # Apply curvature effect only for side collisions
+            if self.speed_x != 0:
+                self.speed_y += offset * 5  # Adjust the multiplier as needed for desired effect
+            
             self.normalize_speed()
