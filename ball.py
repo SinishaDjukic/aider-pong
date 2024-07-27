@@ -85,18 +85,19 @@ class Ball:
             relative_vector[0] * math.sin(angle_rad) + relative_vector[1] * math.cos(angle_rad)
         )
 
-        # Check if the rotated point is inside the obstacle's rect, considering the ball's radius
+        # Check if the rotated point is near the obstacle's edges, considering the ball's radius
         half_width = obstacle.rect.width / 2
         half_height = obstacle.rect.height / 2
-        if (abs(rotated_vector[0]) <= half_width + self.radius and 
-            abs(rotated_vector[1]) <= half_height + self.radius):
-            # Determine which side was hit
-            x_overlap = half_width + self.radius - abs(rotated_vector[0])
-            y_overlap = half_height + self.radius - abs(rotated_vector[1])
-            if x_overlap < y_overlap:
-                return "left" if rotated_vector[0] < 0 else "right"
-            else:
-                return "top" if rotated_vector[1] < 0 else "bottom"
+        x_distance = abs(rotated_vector[0]) - half_width
+        y_distance = abs(rotated_vector[1]) - half_height
+
+        if x_distance <= self.radius and abs(rotated_vector[1]) <= half_height:
+            return "left" if rotated_vector[0] < 0 else "right"
+        elif y_distance <= self.radius and abs(rotated_vector[0]) <= half_width:
+            return "top" if rotated_vector[1] < 0 else "bottom"
+        elif math.sqrt(x_distance**2 + y_distance**2) <= self.radius:
+            # Corner collision
+            return "corner"
         return None
 
     def handle_rotated_collision(self, obstacle, side_hit):
@@ -114,10 +115,18 @@ class Ball:
         )
         
         # Determine the normal based on the side hit
-        if side_hit in ["left", "right"]:
-            normal = (1, 0) if side_hit == "right" else (-1, 0)
-        else:
-            normal = (0, 1) if side_hit == "bottom" else (0, -1)
+        if side_hit == "left":
+            normal = (-1, 0)
+        elif side_hit == "right":
+            normal = (1, 0)
+        elif side_hit == "top":
+            normal = (0, -1)
+        elif side_hit == "bottom":
+            normal = (0, 1)
+        else:  # Corner collision
+            # Normalize the vector from obstacle center to ball center for corner collisions
+            length = math.sqrt(rotated_to_ball[0]**2 + rotated_to_ball[1]**2)
+            normal = (rotated_to_ball[0] / length, rotated_to_ball[1] / length)
         
         # Rotate the normal back
         rotated_normal = (
@@ -132,9 +141,12 @@ class Ball:
         self.speed_x = self.speed_x - 2 * dot_product * rotated_normal[0]
         self.speed_y = self.speed_y - 2 * dot_product * rotated_normal[1]
 
-        # Move the ball slightly away from the obstacle to prevent multiple collisions
-        self.rect.x += self.speed_x * 0.1
-        self.rect.y += self.speed_y * 0.1
+        # Move the ball outside the obstacle
+        overlap = self.radius - math.sqrt((self.rect.centerx - obstacle_center[0])**2 + 
+                                          (self.rect.centery - obstacle_center[1])**2)
+        if overlap > 0:
+            self.rect.x += rotated_normal[0] * overlap
+            self.rect.y += rotated_normal[1] * overlap
 
     def draw(self, screen):
         # Draw the shadow
