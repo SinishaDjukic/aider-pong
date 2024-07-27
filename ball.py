@@ -89,16 +89,39 @@ class Ball:
                 abs(rotated_vector[1]) < obstacle.rect.height / 2)
 
     def handle_rotated_collision(self, obstacle):
-        # Calculate the normal vector of the obstacle's surface
-        angle_rad = math.radians(obstacle.angle)
-        normal = (math.sin(angle_rad), -math.cos(angle_rad))
-
-        # Calculate the dot product of the ball's velocity and the normal
-        dot_product = self.speed_x * normal[0] + self.speed_y * normal[1]
+        # Calculate the obstacle's center
+        obstacle_center = obstacle.rect.center
+        
+        # Calculate the vector from the obstacle's center to the ball's center
+        to_ball = (self.rect.centerx - obstacle_center[0], self.rect.centery - obstacle_center[1])
+        
+        # Rotate this vector by the negative of the obstacle's angle
+        angle_rad = math.radians(-obstacle.angle)
+        rotated_to_ball = (
+            to_ball[0] * math.cos(angle_rad) - to_ball[1] * math.sin(angle_rad),
+            to_ball[0] * math.sin(angle_rad) + to_ball[1] * math.cos(angle_rad)
+        )
+        
+        # Determine which side of the obstacle was hit
+        if abs(rotated_to_ball[0]) > abs(rotated_to_ball[1]):
+            # Hit on left or right side
+            normal = (1, 0) if rotated_to_ball[0] > 0 else (-1, 0)
+        else:
+            # Hit on top or bottom
+            normal = (0, 1) if rotated_to_ball[1] > 0 else (0, -1)
+        
+        # Rotate the normal back
+        rotated_normal = (
+            normal[0] * math.cos(-angle_rad) - normal[1] * math.sin(-angle_rad),
+            normal[0] * math.sin(-angle_rad) + normal[1] * math.cos(-angle_rad)
+        )
+        
+        # Calculate the dot product of the ball's velocity and the rotated normal
+        dot_product = self.speed_x * rotated_normal[0] + self.speed_y * rotated_normal[1]
 
         # Calculate the reflection vector
-        self.speed_x = self.speed_x - 2 * dot_product * normal[0]
-        self.speed_y = self.speed_y - 2 * dot_product * normal[1]
+        self.speed_x = self.speed_x - 2 * dot_product * rotated_normal[0]
+        self.speed_y = self.speed_y - 2 * dot_product * rotated_normal[1]
 
         # Move the ball slightly away from the obstacle to prevent multiple collisions
         self.rect.x += self.speed_x * 0.1
