@@ -10,16 +10,9 @@ class Paddle:
 
     def move(self, up=None):
         if up is not None:
-            if up:
-                if self.rect.top > 20:  # 20 is the height of the top box
-                    self.speed = max(self.speed - self.deceleration, -self.max_speed)
-                else:
-                    self.speed = 0
-            else:
-                if self.rect.bottom < 768 - 20:  # 20 is the height of the bottom box
-                    self.speed = min(self.speed + self.acceleration, self.max_speed)
-                else:
-                    self.speed = 0
+            target_speed = -self.max_speed if up else self.max_speed
+            self.speed += self.acceleration if self.speed < target_speed else -self.acceleration
+            self.speed = max(-self.max_speed, min(self.max_speed, self.speed))
         else:
             # Apply deceleration when no key is pressed
             if self.speed > 0:
