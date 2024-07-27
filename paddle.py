@@ -9,17 +9,13 @@ class Paddle:
         if up is not None:
             self.rect.y += -self.speed if up else self.speed
         
-        # Update paddle position
-
         # Ensure the paddle does not move beyond the top box
         if self.rect.top < 20:
             self.rect.top = 20
-            self.speed = 0
 
         # Ensure the paddle does not move beyond the bottom box
         if self.rect.bottom > 768 - 20:
             self.rect.bottom = 768 - 20
-            self.speed = 0
 
 
     def draw(self, screen, base_color=(255, 255, 255), shadow_color=(50, 50, 50), shadow_offset=(5, 5)):
