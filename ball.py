@@ -53,9 +53,15 @@ class Ball:
             if self.rect.top <= 20:  # 20 is the height of the top box
                 self.rect.top = 20
                 self.speed_y = abs(self.speed_y)  # Ensure the ball moves downward
+                # Ensure the ball is not moving straight vertically
+                if abs(self.speed_x) < 0.1:  # If horizontal speed is very low
+                    self.speed_x = 0.5 if random.random() < 0.5 else -0.5  # Add a small horizontal component
             elif self.rect.bottom >= 768 - 20:  # 20 is the height of the bottom box
                 self.rect.bottom = 768 - 20
                 self.speed_y = -abs(self.speed_y)  # Ensure the ball moves upward
+                # Ensure the ball is not moving straight vertically
+                if abs(self.speed_x) < 0.1:  # If horizontal speed is very low
+                    self.speed_x = 0.5 if random.random() < 0.5 else -0.5  # Add a small horizontal component
 
             for obstacle in self.obstacles:
                 if self.rect.colliderect(obstacle.rect):
@@ -111,6 +117,10 @@ class Ball:
                     self.rect.left = paddle.rect.right
                 else:
                     self.rect.right = paddle.rect.left
+
+                # Ensure the ball is not moving straight vertically
+                if abs(self.speed_x) < 0.1:  # If horizontal speed is very low
+                    self.speed_x = 0.5 if random.random() < 0.5 else -0.5  # Add a small horizontal component
 
                 # Increase ball speed slightly after each paddle hit
                 self.increase_speed()
