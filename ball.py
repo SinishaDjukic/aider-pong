@@ -29,16 +29,15 @@ class Ball:
         self.rect.y += self.speed_y
         self.normalize_speed()
 
-
         if self.rect.left <= 0:
             return "right"
         elif self.rect.right >= 1024:
             return "left"
-        if self.rect.top <= self.radius:
-            self.rect.top = self.radius  # Correct the position to avoid sticking
+        if self.rect.top <= 20 + self.radius:  # 20 is the height of the top box
+            self.rect.top = 20 + self.radius  # Correct the position to avoid sticking
             self.speed_y = -self.speed_y
-        elif self.rect.bottom >= 768 - self.radius:
-            self.rect.bottom = 768 - self.radius  # Correct the position to avoid sticking
+        elif self.rect.bottom >= 768 - 20 - self.radius:  # 20 is the height of the bottom box
+            self.rect.bottom = 768 - 20 - self.radius  # Correct the position to avoid sticking
             self.speed_y = -self.speed_y
 
         for obstacle in self.obstacles:
