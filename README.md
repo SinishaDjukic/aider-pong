@@ -4,49 +4,42 @@ This as a remake of the Pong game in Python, created entirely using the Aider Ch
 My goal was to see how easy it is to create a game using Aider without ever changing a line of code manually - all code modifications were done via the Aider text console chat. The only manual actions were generating and downloading a background image, and downloading a powerup icon.
 
 # Game Rules
-I added some bells and whistles compared to the original, like powerups which spawn an extra ball, randomly generated obstacles that deflect the balls, increasing length of paddles upon hitting a powerup, reflection curvature of the paddle towards the edge, etc.
 
-Objectives as summarized by the Aider Chat directly and entirely based on the code:
+This Pong remake includes several enhancements compared to the original:
 
-## Objective
- The game is a Pong-like game where two players control paddles to hit a ball back and
- forth. The goal is to score points by getting the ball past the opponent's paddle.
+1. **Objective**: Two players control paddles to hit a ball back and forth. Score points by getting the ball past your opponent's paddle.
 
- ## Scoring
- - A player scores a point when the ball passes the opponent's paddle and hits the left o
- right edge of the screen.
- - The game ends when a player reaches 100 points.
+2. **Scoring**: 
+   - Score a point when the ball passes the opponent's paddle and hits the screen edge.
+   - First player to reach 100 points wins.
 
- ## Paddles
- - Each player controls a paddle that can move up and down.
- - The left paddle is controlled using the 'W' and 'S' keys.
- - The right paddle is controlled using the 'UP' and 'DOWN' arrow keys.
- - Paddles have a maximum speed and acceleration/deceleration for smoother movement.
+3. **Controls**:
+   - Left paddle: 'W' (up) and 'S' (down)
+   - Right paddle: 'UP' and 'DOWN' arrow keys
 
- ## Ball
- - The ball moves continuously and bounces off the top and bottom edges of the screen.
- - The ball can collide with paddles and obstacles.
- - When the ball collides with a paddle, it deflects based on where it hits the paddle,
- adding curvature to its trajectory.
+4. **Ball Dynamics**:
+   - Bounces off screen edges and obstacles.
+   - Deflects off paddles with curvature based on hit location.
 
- ## Obstacles
- - Obstacles are added to the game every 10 seconds.
- - Obstacles are randomly placed and can block the ball, causing it to bounce off.
+5. **Obstacles**: 
+   - Randomly generated every 10 seconds.
+   - Deflect the ball on contact.
 
- ## Power-ups
- - A power-up appears on the screen and can be collected by the ball.
- - When a ball collects a power-up, a new ball is spawned, and the paddle that last
- deflected the ball grows in size.
- - Power-ups have an animation effect when they appear.
+6. **Power-ups**:
+   - Spawn randomly on the field.
+   - Effects when collected:
+     - Spawns an extra ball
+     - Increases the length of the paddle that last hit the ball
 
- ## Game Reset
- - The game resets when a player wins, setting scores back to 0 and reinitializing paddle
- balls, and obstacles.
+7. **Game Reset**: 
+   - Occurs when a player wins.
+   - Resets scores, paddles, balls, and obstacles.
 
- ## Graphics
- - The game includes a background image, shadows for visual effects, and colored paddles
- and balls.
- - Scores are displayed at the top of the screen in different colors for each player.
+8. **Graphics**:
+   - Custom background image
+   - Visual effects like shadows
+   - Colored paddles and balls
+   - Score display at the top of the screen
 
 # Installation
 ```
