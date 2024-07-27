@@ -105,6 +105,7 @@ class Ball:
                     # Side collision
                     self.speed_x = -self.speed_x
                     offset = (collision_point[1] - paddle.rect.centery) / (paddle.rect.height / 2)
+                    offset = max(-0.7, min(0.7, offset))  # Clamp offset between -0.7 and 0.7
                     self.speed_y += offset * 5  # Adjust the multiplier for desired effect
                 else:
                     # Top or bottom collision
