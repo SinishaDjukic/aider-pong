@@ -11,12 +11,12 @@ class Paddle:
     def move(self, up=None):
         if up is not None:
             if up:
-                if self.rect.top > 0:
+                if self.rect.top > 20:  # 20 is the height of the top box
                     self.speed = max(self.speed - self.deceleration, -self.max_speed)
                 else:
                     self.speed = 0
             else:
-                if self.rect.bottom < 768:
+                if self.rect.bottom < 768 - 20:  # 20 is the height of the bottom box
                     self.speed = min(self.speed + self.acceleration, self.max_speed)
                 else:
                     self.speed = 0
@@ -30,14 +30,14 @@ class Paddle:
         # Update paddle position
         self.rect.y += self.speed
 
-        # Ensure the paddle does not move beyond the top edge
-        if self.rect.top < 0:
-            self.rect.top = 0
+        # Ensure the paddle does not move beyond the top box
+        if self.rect.top < 20:
+            self.rect.top = 20
             self.speed = 0
 
-        # Ensure the paddle does not move beyond the bottom edge
-        if self.rect.bottom > 768:
-            self.rect.bottom = 768
+        # Ensure the paddle does not move beyond the bottom box
+        if self.rect.bottom > 768 - 20:
+            self.rect.bottom = 768 - 20
             self.speed = 0
 
 
