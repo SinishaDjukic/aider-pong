@@ -1,5 +1,6 @@
 import pygame
 import random
+import math
 
 class Ball:
     def __init__(self, x, y, color=(255, 255, 255), obstacles=None):
@@ -8,7 +9,12 @@ class Ball:
         self.color = color
         self.radius = self.rect.width // 2  # Assuming the ball is a circle and width equals height
         self.speed_x = random.choice([-4, 4])
+        self.speed_y = random.choice([-4, 4])
         self.obstacles = obstacles if obstacles is not None else []
+
+    def increase_speed(self):
+        self.speed_x *= 1.05
+        self.speed_y *= 1.05
         self.speed_y = random.choice([-4, 4])
 
     def move(self):
