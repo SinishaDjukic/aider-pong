@@ -64,8 +64,9 @@ class Ball:
                     self.speed_x = 0.5 if random.random() < 0.5 else -0.5  # Add a small horizontal component
 
             for obstacle in self.obstacles:
-                if self.check_rotated_collision(obstacle):
-                    self.handle_rotated_collision(obstacle)
+                side_hit = self.check_rotated_collision(obstacle)
+                if side_hit:
+                    self.handle_rotated_collision(obstacle, side_hit)
                     self.increase_speed()  # Increase the ball's speed after hitting an obstacle
                     return None
 
@@ -85,10 +86,17 @@ class Ball:
         )
 
         # Check if the rotated point is inside the obstacle's rect
-        return (abs(rotated_vector[0]) < obstacle.rect.width / 2 and
-                abs(rotated_vector[1]) < obstacle.rect.height / 2)
+        half_width = obstacle.rect.width / 2
+        half_height = obstacle.rect.height / 2
+        if abs(rotated_vector[0]) <= half_width and abs(rotated_vector[1]) <= half_height:
+            # Determine which side was hit
+            if abs(rotated_vector[0]) / half_width > abs(rotated_vector[1]) / half_height:
+                return "left" if rotated_vector[0] < 0 else "right"
+            else:
+                return "top" if rotated_vector[1] < 0 else "bottom"
+        return None
 
-    def handle_rotated_collision(self, obstacle):
+    def handle_rotated_collision(self, obstacle, side_hit):
         # Calculate the obstacle's center
         obstacle_center = obstacle.rect.center
         
@@ -102,13 +110,11 @@ class Ball:
             to_ball[0] * math.sin(angle_rad) + to_ball[1] * math.cos(angle_rad)
         )
         
-        # Determine which side of the obstacle was hit
-        if abs(rotated_to_ball[0]) > abs(rotated_to_ball[1]):
-            # Hit on left or right side
-            normal = (1, 0) if rotated_to_ball[0] > 0 else (-1, 0)
+        # Determine the normal based on the side hit
+        if side_hit in ["left", "right"]:
+            normal = (1, 0) if side_hit == "right" else (-1, 0)
         else:
-            # Hit on top or bottom
-            normal = (0, 1) if rotated_to_ball[1] > 0 else (0, -1)
+            normal = (0, 1) if side_hit == "bottom" else (0, -1)
         
         # Rotate the normal back
         rotated_normal = (
