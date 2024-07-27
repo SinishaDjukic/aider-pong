@@ -15,9 +15,18 @@ class Game:
         self.last_obstacle_update = pygame.time.get_ticks()
         self.paddle1 = Paddle(30, 334)  # Centered vertically
         self.paddle2 = Paddle(984, 334)  # Centered vertically
-        self.obstacles = []
+        self.obstacles = self.initialize_obstacles(10)
         self.balls = [Ball(502, 374, obstacles=self.obstacles)]  # Centered horizontally and vertically
         self.powerup = PowerUp()
+
+    def initialize_obstacles(self, num_obstacles):
+        obstacles = []
+        for _ in range(num_obstacles):
+            new_obstacle = Obstacle()
+            while any(new_obstacle.rect.colliderect(obstacle.rect) for obstacle in obstacles):
+                new_obstacle = Obstacle()
+            obstacles.append(new_obstacle)
+        return obstacles
 
     def update(self):
         keys = pygame.key.get_pressed()
