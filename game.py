@@ -155,6 +155,17 @@ class Game:
         self.screen.blit(text_surface, text_rect)
         pygame.display.flip()
 
+        # Wait for 5 seconds
+        pygame.time.wait(5000)
+
+        # Display "Press any key to restart" message
+        font = pygame.font.Font(None, 50)
+        restart_text = "Press any key to restart"
+        restart_surface = font.render(restart_text, True, (255, 255, 255))  # White color
+        restart_rect = restart_surface.get_rect(center=(self.screen.get_width() // 2, self.screen.get_height() // 2 + 100))
+        self.screen.blit(restart_surface, restart_rect)
+        pygame.display.flip()
+
         # Wait for key press to restart the game
         waiting = True
         while waiting:
