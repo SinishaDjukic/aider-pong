@@ -117,6 +117,10 @@ class Game:
         dim_overlay.fill((0, 0, 0, 128))  # 128 is 50% transparency
         self.screen.blit(dim_overlay, (0, 0))
 
+        # Draw white boxes at the top and bottom of the screen
+        pygame.draw.rect(self.screen, (255, 255, 255), (0, 0, screen_width, 20))  # Top box
+        pygame.draw.rect(self.screen, (255, 255, 255), (0, screen_height - 20, screen_width, 20))  # Bottom box
+
         # Draw the scores without shadow
         font = pygame.font.Font(None, 74)
         score1_surface = font.render(str(self.score1), True, (137, 207, 240))  # Baby blue
