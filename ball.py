@@ -29,37 +29,43 @@ class Ball:
         self.normalize_speed()
 
     def move(self):
-        self.rect.x += self.speed_x
-        self.rect.y += self.speed_y
+        steps = max(abs(int(self.speed_x)), abs(int(self.speed_y)), 1)
+        dx = self.speed_x / steps
+        dy = self.speed_y / steps
+
+        for _ in range(steps):
+            self.rect.x += dx
+            self.rect.y += dy
+
+            if self.rect.left <= 0:
+                return "right"
+            elif self.rect.right >= 1024:
+                return "left"
+            if self.rect.top <= 20 + self.radius:  # 20 is the height of the top box
+                self.rect.top = 20 + self.radius  # Correct the position to avoid sticking
+                self.speed_y = -self.speed_y
+            elif self.rect.bottom >= 768 - 20 - self.radius:  # 20 is the height of the bottom box
+                self.rect.bottom = 768 - 20 - self.radius  # Correct the position to avoid sticking
+                self.speed_y = -self.speed_y
+
+            for obstacle in self.obstacles:
+                if self.rect.colliderect(obstacle.rect):
+                    if abs(self.rect.right - obstacle.rect.left) < abs(self.rect.bottom - obstacle.rect.top) and abs(self.rect.right - obstacle.rect.left) < abs(self.rect.top - obstacle.rect.bottom):
+                        self.rect.right = obstacle.rect.left
+                        self.speed_x = -self.speed_x
+                    elif abs(self.rect.left - obstacle.rect.right) < abs(self.rect.bottom - obstacle.rect.top) and abs(self.rect.left - obstacle.rect.right) < abs(self.rect.top - obstacle.rect.bottom):
+                        self.rect.left = obstacle.rect.right
+                        self.speed_x = -self.speed_x
+                    elif abs(self.rect.bottom - obstacle.rect.top) < abs(self.rect.right - obstacle.rect.left) and abs(self.rect.bottom - obstacle.rect.top) < abs(self.rect.left - obstacle.rect.right):
+                        self.rect.bottom = obstacle.rect.top
+                        self.speed_y = -self.speed_y
+                    elif abs(self.rect.top - obstacle.rect.bottom) < abs(self.rect.right - obstacle.rect.left) and abs(self.rect.top - obstacle.rect.bottom) < abs(self.rect.left - obstacle.rect.right):
+                        self.rect.top = obstacle.rect.bottom
+                        self.speed_y = -self.speed_y
+                    self.increase_speed()  # Increase the ball's speed after hitting an obstacle
+                    return None
+
         self.normalize_speed()
-
-        if self.rect.left <= 0:
-            return "right"
-        elif self.rect.right >= 1024:
-            return "left"
-        if self.rect.top <= 20 + self.radius:  # 20 is the height of the top box
-            self.rect.top = 20 + self.radius  # Correct the position to avoid sticking
-            self.speed_y = -self.speed_y
-        elif self.rect.bottom >= 768 - 20 - self.radius:  # 20 is the height of the bottom box
-            self.rect.bottom = 768 - 20 - self.radius  # Correct the position to avoid sticking
-            self.speed_y = -self.speed_y
-
-        for obstacle in self.obstacles:
-            if self.rect.colliderect(obstacle.rect):
-                if abs(self.rect.right - obstacle.rect.left) < abs(self.rect.bottom - obstacle.rect.top) and abs(self.rect.right - obstacle.rect.left) < abs(self.rect.top - obstacle.rect.bottom):
-                    self.rect.right = obstacle.rect.left
-                    self.speed_x = -self.speed_x
-                elif abs(self.rect.left - obstacle.rect.right) < abs(self.rect.bottom - obstacle.rect.top) and abs(self.rect.left - obstacle.rect.right) < abs(self.rect.top - obstacle.rect.bottom):
-                    self.rect.left = obstacle.rect.right
-                    self.speed_x = -self.speed_x
-                elif abs(self.rect.bottom - obstacle.rect.top) < abs(self.rect.right - obstacle.rect.left) and abs(self.rect.bottom - obstacle.rect.top) < abs(self.rect.left - obstacle.rect.right):
-                    self.rect.bottom = obstacle.rect.top
-                    self.speed_y = -self.speed_y
-                elif abs(self.rect.top - obstacle.rect.bottom) < abs(self.rect.right - obstacle.rect.left) and abs(self.rect.top - obstacle.rect.bottom) < abs(self.rect.left - obstacle.rect.right):
-                    self.rect.top = obstacle.rect.bottom
-                    self.speed_y = -self.speed_y
-                self.increase_speed()  # Increase the ball's speed after hitting an obstacle
-                return None
 
     def draw(self, screen):
         # Draw the shadow

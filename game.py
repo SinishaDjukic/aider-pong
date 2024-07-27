@@ -21,21 +21,32 @@ class Game:
 
     def update(self):
         keys = pygame.key.get_pressed()
+        
+        # Move paddles with sub-pixel precision
+        paddle_steps = 10
         if keys[pygame.K_w] or keys[pygame.K_s]:
-            self.paddle1.move(up=keys[pygame.K_w])
+            for _ in range(paddle_steps):
+                self.paddle1.move(up=keys[pygame.K_w])
+                self.check_ball_paddle_collisions()
         else:
-            self.paddle1.move(up=None)
+            for _ in range(paddle_steps):
+                self.paddle1.move(up=None)
+                self.check_ball_paddle_collisions()
 
         if keys[pygame.K_UP] or keys[pygame.K_DOWN]:
-            self.paddle2.move(up=keys[pygame.K_UP])
+            for _ in range(paddle_steps):
+                self.paddle2.move(up=keys[pygame.K_UP])
+                self.check_ball_paddle_collisions()
         else:
-            self.paddle2.move(up=None)
+            for _ in range(paddle_steps):
+                self.paddle2.move(up=None)
+                self.check_ball_paddle_collisions()
 
         if self.score1 >= 100 or self.score2 >= 100:
             self.display_winner()
             return
 
-        for ball in self.balls:
+        for ball in self.balls[:]:  # Use a copy of the list to safely remove balls
             result = ball.move()
             if result == "left" or result == "right":
                 if ball.color == (255, 255, 255):  # White ball
@@ -61,26 +72,26 @@ class Game:
                     self.timer = 10
                 else:
                     self.balls.remove(ball)
+            else:
+                self.check_powerup_collision(ball)
+
+    def check_ball_paddle_collisions(self):
+        for ball in self.balls:
             ball.check_collision(self.paddle1, self.paddle2)
 
-            if ball.rect.colliderect(self.powerup.rect) and ball.color == (255, 255, 255):
-                new_ball = Ball(ball.rect.x, ball.rect.y, obstacles=self.obstacles, color=(255, 165, 0))  # Duck orange
-                new_ball.speed_x = ball.speed_x
-                new_ball.speed_y = random.choice([-4, 4])
-                self.balls.append(new_ball)
-                if ball.last_deflected_by == "paddle1":
-                    self.score1 += 1
-                    self.paddle1.rect.height += 10
-                elif ball.last_deflected_by == "paddle2":
-                    self.score2 += 1
-                    self.paddle2.rect.height += 10
-                if ball.last_deflected_by == "paddle1":
-                    self.score1 += 1
-                    self.paddle1.rect.height += 10
-                elif ball.last_deflected_by == "paddle2":
-                    self.score2 += 1
-                    self.paddle2.rect.height += 10
-                self.powerup.move()
+    def check_powerup_collision(self, ball):
+        if ball.rect.colliderect(self.powerup.rect) and ball.color == (255, 255, 255):
+            new_ball = Ball(ball.rect.x, ball.rect.y, obstacles=self.obstacles, color=(255, 165, 0))  # Duck orange
+            new_ball.speed_x = ball.speed_x
+            new_ball.speed_y = random.choice([-4, 4])
+            self.balls.append(new_ball)
+            if ball.last_deflected_by == "paddle1":
+                self.score1 += 1
+                self.paddle1.rect.height += 10
+            elif ball.last_deflected_by == "paddle2":
+                self.score2 += 1
+                self.paddle2.rect.height += 10
+            self.powerup.move()
 
         if pygame.time.get_ticks() - self.powerup.spawn_time > 15000:
             self.powerup.move()
