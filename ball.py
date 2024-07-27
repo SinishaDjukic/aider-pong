@@ -134,16 +134,10 @@ class Ball:
     def check_collision(self, paddle1, paddle2):
         for paddle in [paddle1, paddle2]:
             if self.rect.colliderect(paddle.rect):
-                # Calculate the collision point
-                collision_point = self.rect.clip(paddle.rect).center
-
                 # Determine if it's a side collision or top/bottom collision
                 if abs(self.rect.right - paddle.rect.left) < 10 or abs(self.rect.left - paddle.rect.right) < 10:
                     # Side collision
                     self.speed_x = -self.speed_x
-                    offset = (collision_point[1] - paddle.rect.centery) / (paddle.rect.height / 2)
-                    offset = max(-0.7, min(0.7, offset))  # Clamp offset between -0.7 and 0.7
-                    self.speed_y += offset * 5  # Adjust the multiplier for desired effect
                 else:
                     # Top or bottom collision
                     self.speed_y = -self.speed_y
