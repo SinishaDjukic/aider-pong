@@ -121,7 +121,15 @@ class Game:
         pygame.draw.rect(self.screen, (255, 255, 255), (0, 0, screen_width, 20))  # Top box
         pygame.draw.rect(self.screen, (255, 255, 255), (0, screen_height - 20, screen_width, 20))  # Bottom box
 
-        # Draw the scores without shadow
+        self.paddle1.draw(self.screen, base_color=(137, 207, 240))  # Baby blue
+        self.paddle2.draw(self.screen, base_color=(0, 255, 0))  # Bright green
+        for ball in self.balls:
+            ball.draw(self.screen)
+        self.powerup.draw(self.screen)
+        for obstacle in self.obstacles:
+            obstacle.draw(self.screen)
+
+        # Draw the scores without shadow (moved to the end)
         font = pygame.font.Font(None, 74)
         score1_surface = font.render(str(self.score1), True, (137, 207, 240))  # Baby blue
         score2_surface = font.render(str(self.score2), True, (0, 255, 0))  # Bright green
@@ -132,15 +140,6 @@ class Game:
 
         self.screen.blit(score1_surface, (score1_x, 50))
         self.screen.blit(score2_surface, (score2_x, 50))
-
-
-        self.paddle1.draw(self.screen, base_color=(137, 207, 240))  # Baby blue
-        self.paddle2.draw(self.screen, base_color=(0, 255, 0))  # Bright green
-        for ball in self.balls:
-            ball.draw(self.screen)
-        self.powerup.draw(self.screen)
-        for obstacle in self.obstacles:
-            obstacle.draw(self.screen)
 
     def display_winner(self):
         font = pygame.font.Font(None, 150)
