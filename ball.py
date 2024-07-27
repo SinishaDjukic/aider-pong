@@ -47,6 +47,7 @@ class Ball:
                 elif abs(self.rect.top - obstacle.rect.bottom) < abs(self.rect.right - obstacle.rect.left) and abs(self.rect.top - obstacle.rect.bottom) < abs(self.rect.left - obstacle.rect.right):
                     self.rect.top = obstacle.rect.bottom
                     self.speed_y = -self.speed_y
+                self.increase_speed()  # Increase the ball's speed after hitting an obstacle
                 return None
 
     def draw(self, screen):
