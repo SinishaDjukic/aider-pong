@@ -85,6 +85,9 @@ class Ball:
                 offset = (self.rect.centery - paddle2.rect.centery) / (paddle2.rect.height / 2)
                 self.last_deflected_by = "paddle2"
             
+            # Clamp the offset between -0.9 and 0.9
+            offset = max(-0.9, min(0.9, offset))
+            
             # Apply curvature effect: the closer to the edge, the larger the deflection
             self.speed_x = -self.speed_x
             self.speed_y += offset * 5  # Adjust the multiplier as needed for desired effect
