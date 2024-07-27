@@ -64,23 +64,45 @@ class Ball:
                     self.speed_x = 0.5 if random.random() < 0.5 else -0.5  # Add a small horizontal component
 
             for obstacle in self.obstacles:
-                if self.rect.colliderect(obstacle.rect):
-                    if abs(self.rect.right - obstacle.rect.left) < abs(self.rect.bottom - obstacle.rect.top) and abs(self.rect.right - obstacle.rect.left) < abs(self.rect.top - obstacle.rect.bottom):
-                        self.rect.right = obstacle.rect.left
-                        self.speed_x = -self.speed_x
-                    elif abs(self.rect.left - obstacle.rect.right) < abs(self.rect.bottom - obstacle.rect.top) and abs(self.rect.left - obstacle.rect.right) < abs(self.rect.top - obstacle.rect.bottom):
-                        self.rect.left = obstacle.rect.right
-                        self.speed_x = -self.speed_x
-                    elif abs(self.rect.bottom - obstacle.rect.top) < abs(self.rect.right - obstacle.rect.left) and abs(self.rect.bottom - obstacle.rect.top) < abs(self.rect.left - obstacle.rect.right):
-                        self.rect.bottom = obstacle.rect.top
-                        self.speed_y = -self.speed_y
-                    elif abs(self.rect.top - obstacle.rect.bottom) < abs(self.rect.right - obstacle.rect.left) and abs(self.rect.top - obstacle.rect.bottom) < abs(self.rect.left - obstacle.rect.right):
-                        self.rect.top = obstacle.rect.bottom
-                        self.speed_y = -self.speed_y
+                if self.check_rotated_collision(obstacle):
+                    self.handle_rotated_collision(obstacle)
                     self.increase_speed()  # Increase the ball's speed after hitting an obstacle
                     return None
 
         self.normalize_speed()
+
+    def check_rotated_collision(self, obstacle):
+        # Get the obstacle's center and create a vector from it to the ball's center
+        obstacle_center = obstacle.rect.center
+        ball_center = self.rect.center
+        relative_vector = (ball_center[0] - obstacle_center[0], ball_center[1] - obstacle_center[1])
+
+        # Rotate the vector by the negative of the obstacle's angle
+        angle_rad = math.radians(-obstacle.angle)
+        rotated_vector = (
+            relative_vector[0] * math.cos(angle_rad) - relative_vector[1] * math.sin(angle_rad),
+            relative_vector[0] * math.sin(angle_rad) + relative_vector[1] * math.cos(angle_rad)
+        )
+
+        # Check if the rotated point is inside the obstacle's rect
+        return (abs(rotated_vector[0]) < obstacle.rect.width / 2 and
+                abs(rotated_vector[1]) < obstacle.rect.height / 2)
+
+    def handle_rotated_collision(self, obstacle):
+        # Calculate the normal vector of the obstacle's surface
+        angle_rad = math.radians(obstacle.angle)
+        normal = (math.sin(angle_rad), -math.cos(angle_rad))
+
+        # Calculate the dot product of the ball's velocity and the normal
+        dot_product = self.speed_x * normal[0] + self.speed_y * normal[1]
+
+        # Calculate the reflection vector
+        self.speed_x = self.speed_x - 2 * dot_product * normal[0]
+        self.speed_y = self.speed_y - 2 * dot_product * normal[1]
+
+        # Move the ball slightly away from the obstacle to prevent multiple collisions
+        self.rect.x += self.speed_x * 0.1
+        self.rect.y += self.speed_y * 0.1
 
     def draw(self, screen):
         # Draw the shadow
