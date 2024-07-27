@@ -3,25 +3,13 @@ import pygame
 class Paddle:
     def __init__(self, x, y):
         self.rect = pygame.Rect(x, y, 10, 100)
-        self.speed = 0
-        self.max_speed = 1.5  # Reduced by 50% for even slower movement
-        self.acceleration = 0.15  # Reduced by 50% for smoother acceleration
-        self.deceleration = 0.15  # Reduced by 50% for smoother deceleration
+        self.speed = 5  # Constant speed for both directions
 
     def move(self, up=None):
         if up is not None:
-            target_speed = -self.max_speed if up else self.max_speed
-            self.speed += self.acceleration if self.speed < target_speed else -self.acceleration
-            self.speed = max(-self.max_speed, min(self.max_speed, self.speed))
-        else:
-            # Apply deceleration when no key is pressed
-            if self.speed > 0:
-                self.speed = max(self.speed - self.deceleration, 0)
-            elif self.speed < 0:
-                self.speed = min(self.speed + self.deceleration, 0)
-
+            self.rect.y += -self.speed if up else self.speed
+        
         # Update paddle position
-        self.rect.y += self.speed
 
         # Ensure the paddle does not move beyond the top box
         if self.rect.top < 20:
