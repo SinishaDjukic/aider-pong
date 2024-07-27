@@ -85,12 +85,15 @@ class Ball:
             relative_vector[0] * math.sin(angle_rad) + relative_vector[1] * math.cos(angle_rad)
         )
 
-        # Check if the rotated point is inside the obstacle's rect
+        # Check if the rotated point is inside the obstacle's rect, considering the ball's radius
         half_width = obstacle.rect.width / 2
         half_height = obstacle.rect.height / 2
-        if abs(rotated_vector[0]) <= half_width and abs(rotated_vector[1]) <= half_height:
+        if (abs(rotated_vector[0]) <= half_width + self.radius and 
+            abs(rotated_vector[1]) <= half_height + self.radius):
             # Determine which side was hit
-            if abs(rotated_vector[0]) / half_width > abs(rotated_vector[1]) / half_height:
+            x_overlap = half_width + self.radius - abs(rotated_vector[0])
+            y_overlap = half_height + self.radius - abs(rotated_vector[1])
+            if x_overlap < y_overlap:
                 return "left" if rotated_vector[0] < 0 else "right"
             else:
                 return "top" if rotated_vector[1] < 0 else "bottom"
