@@ -11,15 +11,13 @@ class Game:
         self.background_image = pygame.image.load('background.png')
         self.score1 = 0
         self.score2 = 0
-        self.timer = 5
-        self.last_timer_update = pygame.time.get_ticks()
+        self.obstacle_timer = 10
+        self.last_obstacle_update = pygame.time.get_ticks()
         self.paddle1 = Paddle(30, 334)  # Centered vertically
         self.paddle2 = Paddle(984, 334)  # Centered vertically
         self.obstacles = []
-        self.obstacles = []
         self.balls = [Ball(502, 374, obstacles=self.obstacles)]  # Centered horizontally and vertically
         self.powerup = PowerUp()
-        self.obstacles = []
 
     def update(self):
         keys = pygame.key.get_pressed()
@@ -87,12 +85,12 @@ class Game:
         if pygame.time.get_ticks() - self.powerup.spawn_time > 15000:
             self.powerup.move()
 
-        # Update the countdown timer
+        # Update the obstacle timer
         current_time = pygame.time.get_ticks()
-        if current_time - self.last_timer_update >= 1000:
-            self.timer -= 1
-            self.last_timer_update = current_time
-            if self.timer <= 0:
+        if current_time - self.last_obstacle_update >= 1000:
+            self.obstacle_timer -= 1
+            self.last_obstacle_update = current_time
+            if self.obstacle_timer <= 0:
                 new_obstacle = Obstacle()
                 # Ensure the new obstacle does not overlap with existing obstacles
                 while any(new_obstacle.rect.colliderect(obstacle.rect) for obstacle in self.obstacles):
@@ -100,7 +98,7 @@ class Game:
                 self.obstacles.append(new_obstacle)
                 for ball in self.balls:
                     ball.obstacles = self.obstacles
-                self.timer = 10
+                self.obstacle_timer = 10
 
     def draw(self):
         # Draw the background image
