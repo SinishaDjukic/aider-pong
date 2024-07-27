@@ -21,6 +21,10 @@ class Ball:
             self.speed_y = (self.speed_y / magnitude) * self.speed
 
     def increase_speed(self):
+        self.speed *= 1.1  # Increase speed by 10%
+        self.normalize_speed()
+
+    def increase_speed(self):
         self.speed *= 1.05
         self.normalize_speed()
 
