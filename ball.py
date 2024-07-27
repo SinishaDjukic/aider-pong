@@ -87,28 +87,30 @@ class Ball:
         pygame.draw.ellipse(screen, self.color, self.rect)
 
     def check_collision(self, paddle1, paddle2):
-        offset = 0  # Initialize offset
+        for paddle in [paddle1, paddle2]:
+            if self.rect.colliderect(paddle.rect):
+                # Calculate the collision point
+                collision_point = self.rect.clip(paddle.rect).center
 
-        if self.rect.colliderect(paddle1.rect) or self.rect.colliderect(paddle2.rect):
-            colliding_paddle = paddle1 if self.rect.colliderect(paddle1.rect) else paddle2
-            
-            # Check if the ball hits the top or bottom of the paddle
-            if self.rect.bottom > colliding_paddle.rect.top and self.rect.top < colliding_paddle.rect.bottom:
-                # Side collision
-                offset = (self.rect.centery - colliding_paddle.rect.centery) / (colliding_paddle.rect.height / 2)
-                self.speed_x = -self.speed_x
-            else:
-                # Top or bottom collision
-                self.speed_y = -self.speed_y
-                offset = 0  # No horizontal deflection for top/bottom collisions
-            
-            self.last_deflected_by = "paddle1" if colliding_paddle == paddle1 else "paddle2"
-            
-            # Clamp the offset between -0.9 and 0.9
-            offset = max(-0.9, min(0.9, offset))
-            
-            # Apply curvature effect only for side collisions
-            if self.speed_x != 0:
-                self.speed_y += offset * 5  # Adjust the multiplier as needed for desired effect
-            
-            self.normalize_speed()
+                # Determine if it's a side collision or top/bottom collision
+                if abs(self.rect.right - paddle.rect.left) < 10 or abs(self.rect.left - paddle.rect.right) < 10:
+                    # Side collision
+                    self.speed_x = -self.speed_x
+                    offset = (collision_point[1] - paddle.rect.centery) / (paddle.rect.height / 2)
+                    self.speed_y += offset * 5  # Adjust the multiplier for desired effect
+                else:
+                    # Top or bottom collision
+                    self.speed_y = -self.speed_y
+
+                self.last_deflected_by = "paddle1" if paddle == paddle1 else "paddle2"
+
+                # Move the ball outside the paddle to prevent multiple collisions
+                if self.speed_x > 0:
+                    self.rect.left = paddle.rect.right
+                else:
+                    self.rect.right = paddle.rect.left
+
+                # Increase ball speed slightly after each paddle hit
+                self.increase_speed()
+                self.normalize_speed()
+                break  # Exit the loop after handling the collision
