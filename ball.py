@@ -32,38 +32,10 @@ class Ball:
         self.speed *= 1.05
         self.normalize_speed()
 
-    def time_of_impact(self, paddle1, paddle2, obstacles):
-        steps = 10  # Number of sub-steps for fine checking
-        toi = 1.0
-        for step in range(1, steps + 1):
-            sub_toi = step / steps
-            temp_rect = self.rect.copy()
-            temp_rect.x += self.speed_x * sub_toi
-            temp_rect.y += self.speed_y * sub_toi
-
-            # Check collision with paddles
-            for paddle in [paddle1, paddle2]:
-                if temp_rect.colliderect(paddle.rect):
-                    return sub_toi
-
-            # Check collision with obstacles
-            for obstacle in obstacles:
-                if temp_rect.colliderect(obstacle.rect):
-                    return sub_toi
-
-            # Check for top and bottom collisions
-            if temp_rect.top <= 20 or temp_rect.bottom >= 768 - 20:
-                return sub_toi
-
-        return toi
 
     def move(self, paddle1, paddle2, obstacles):
-        toi = self.time_of_impact(paddle1, paddle2, obstacles)
-        steps = 10  # Number of sub-steps for fine checking
-        for step in range(steps):
-            toi = self.time_of_impact(paddle1, paddle2, obstacles)
-            self.rect.x += self.speed_x * toi / steps
-            self.rect.y += self.speed_y * toi / steps
+        self.rect.x += self.speed_x
+        self.rect.y += self.speed_y
 
             if self.rect.left <= 0:
                 return "right"
