@@ -153,6 +153,10 @@ class Ball:
                     # Top or bottom collision
                     self.speed_y = -self.speed_y
 
+                # Ensure the ball is not moving straight vertically
+                if abs(self.speed_x) < 0.1:  # If horizontal speed is very low
+                    self.speed_x = 0.5 if random.random() < 0.5 else -0.5  # Add a small horizontal component
+
                 self.last_deflected_by = "paddle1" if paddle == paddle1 else "paddle2"
 
                 # Move the ball outside the paddle to prevent multiple collisions
