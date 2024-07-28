@@ -27,48 +27,59 @@ class Ball:
             self.speed_x = (self.speed_x / magnitude) * self.speed
             self.speed_y = (self.speed_y / magnitude) * self.speed
 
-    def increase_speed(self):
-        self.speed *= 1.1  # Increase speed by 10%
-        self.normalize_speed()
+    def time_of_impact(self, paddle1, paddle2, obstacles):
+        # Calculate the TOI for the ball with respect to paddles and obstacles
+        # This is a simplified version and may need adjustments based on the actual game physics
+        toi = 1.0  # Default to no collision within the next frame
+
+        # Check collision with paddles
+        for paddle in [paddle1, paddle2]:
+            if self.rect.colliderect(paddle.rect):
+                toi = 0.0
+                break
+
+        # Check collision with obstacles
+        for obstacle in obstacles:
+            if self.rect.colliderect(obstacle.rect):
+                toi = 0.0
+                break
+
+        return toi
 
     def increase_speed(self):
         self.speed *= 1.05
         self.normalize_speed()
 
-    def move(self):
-        steps = max(abs(int(self.speed_x)), abs(int(self.speed_y)), 1)
-        dx = self.speed_x / steps
-        dy = self.speed_y / steps
+    def move(self, paddle1, paddle2, obstacles):
+        toi = self.time_of_impact(paddle1, paddle2, obstacles)
+        self.rect.x += self.speed_x * toi
+        self.rect.y += self.speed_y * toi
 
-        for _ in range(steps):
-            self.rect.x += dx
-            self.rect.y += dy
+        if self.rect.left <= 0:
+            return "right"
+        elif self.rect.right >= 1024:
+            return "left"
+        
+        # Check for top and bottom collisions
+        if self.rect.top <= 20:  # 20 is the height of the top box
+            self.rect.top = 20
+            self.speed_y = abs(self.speed_y)  # Ensure the ball moves downward
+            # Ensure the ball is not moving straight vertically
+            if abs(self.speed_x) < 0.1:  # If horizontal speed is very low
+                self.speed_x = 0.5 if random.random() < 0.5 else -0.5  # Add a small horizontal component
+        elif self.rect.bottom >= 768 - 20:  # 20 is the height of the bottom box
+            self.rect.bottom = 768 - 20
+            self.speed_y = -abs(self.speed_y)  # Ensure the ball moves upward
+            # Ensure the ball is not moving straight vertically
+            if abs(self.speed_x) < 0.1:  # If horizontal speed is very low
+                self.speed_x = 0.5 if random.random() < 0.5 else -0.5  # Add a small horizontal component
 
-            if self.rect.left <= 0:
-                return "right"
-            elif self.rect.right >= 1024:
-                return "left"
-            
-            # Check for top and bottom collisions
-            if self.rect.top <= 20:  # 20 is the height of the top box
-                self.rect.top = 20
-                self.speed_y = abs(self.speed_y)  # Ensure the ball moves downward
-                # Ensure the ball is not moving straight vertically
-                if abs(self.speed_x) < 0.1:  # If horizontal speed is very low
-                    self.speed_x = 0.5 if random.random() < 0.5 else -0.5  # Add a small horizontal component
-            elif self.rect.bottom >= 768 - 20:  # 20 is the height of the bottom box
-                self.rect.bottom = 768 - 20
-                self.speed_y = -abs(self.speed_y)  # Ensure the ball moves upward
-                # Ensure the ball is not moving straight vertically
-                if abs(self.speed_x) < 0.1:  # If horizontal speed is very low
-                    self.speed_x = 0.5 if random.random() < 0.5 else -0.5  # Add a small horizontal component
-
-            for obstacle in self.obstacles:
-                collision_point = self.check_line_collision(obstacle)
-                if collision_point:
-                    self.handle_line_collision(obstacle, collision_point)
-                    self.increase_speed()  # Increase the ball's speed after hitting an obstacle
-                    return None
+        for obstacle in self.obstacles:
+            collision_point = self.check_line_collision(obstacle)
+            if collision_point:
+                self.handle_line_collision(obstacle, collision_point)
+                self.increase_speed()  # Increase the ball's speed after hitting an obstacle
+                return None
 
         self.normalize_speed()
 

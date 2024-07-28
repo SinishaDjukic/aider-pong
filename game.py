@@ -64,7 +64,7 @@ class Game:
             return
 
         for ball in self.balls[:]:  # Use a copy of the list to safely remove balls
-            result = ball.move()
+            result = ball.move(self.paddle1, self.paddle2, self.obstacles)
             if result == "left" or result == "right":
                 if ball.color == (255, 255, 255):  # White ball
                     score = 10
