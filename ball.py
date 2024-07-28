@@ -27,33 +27,14 @@ class Ball:
             self.speed_x = (self.speed_x / magnitude) * self.speed
             self.speed_y = (self.speed_y / magnitude) * self.speed
 
-    def time_of_impact(self, paddle1, paddle2, obstacles):
-        # Calculate the TOI for the ball with respect to paddles and obstacles
-        # This is a simplified version and may need adjustments based on the actual game physics
-        toi = 1.0  # Default to no collision within the next frame
-
-        # Check collision with paddles
-        for paddle in [paddle1, paddle2]:
-            if self.rect.colliderect(paddle.rect):
-                toi = 0.0
-                break
-
-        # Check collision with obstacles
-        for obstacle in obstacles:
-            if self.rect.colliderect(obstacle.rect):
-                toi = 0.0
-                break
-
-        return toi
 
     def increase_speed(self):
         self.speed *= 1.05
         self.normalize_speed()
 
     def move(self, paddle1, paddle2, obstacles):
-        toi = self.time_of_impact(paddle1, paddle2, obstacles)
-        self.rect.x += self.speed_x * toi
-        self.rect.y += self.speed_y * toi
+        self.rect.x += self.speed_x
+        self.rect.y += self.speed_y
 
         if self.rect.left <= 0:
             return "right"
