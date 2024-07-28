@@ -18,6 +18,12 @@ class Obstacle:
             self.start[0] + length * math.cos(angle),
             self.start[1] + length * math.sin(angle)
         )
+        self.rect = pygame.Rect(
+            min(self.start[0], self.end[0]),
+            min(self.start[1], self.end[1]),
+            abs(self.start[0] - self.end[0]),
+            abs(self.start[1] - self.end[1])
+        )
         self.color = (245, 245, 220)  # Beige color
 
     def draw(self, screen):
