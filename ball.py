@@ -126,13 +126,12 @@ class Ball:
     def check_collision(self, paddle1, paddle2):
         for paddle in [paddle1, paddle2]:
             if self.rect.colliderect(paddle.rect):
-                # Determine if it's a side collision or top/bottom collision
-                if abs(self.rect.right - paddle.rect.left) < 10 or abs(self.rect.left - paddle.rect.right) < 10:
-                    # Side collision
-                    self.speed_x = -self.speed_x
-                else:
-                    # Top or bottom collision
-                    self.speed_y = -self.speed_y
+                # Calculate the hit position relative to the paddle's center
+                hit_pos = (self.rect.centery - paddle.rect.centery) / (paddle.rect.height / 2)
+                
+                # Adjust the ball's speed based on the hit position
+                self.speed_y = self.speed * hit_pos
+                self.speed_x = -self.speed_x  # Reverse the horizontal direction
 
                 # Ensure the ball is not moving straight vertically
                 if abs(self.speed_x) < 0.1:  # If horizontal speed is very low
