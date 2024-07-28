@@ -37,31 +37,31 @@ class Ball:
         self.rect.x += self.speed_x
         self.rect.y += self.speed_y
 
-            if self.rect.left <= 0:
-                return "right"
-            elif self.rect.right >= 1024:
-                return "left"
+        if self.rect.left <= 0:
+            return "right"
+        elif self.rect.right >= 1024:
+            return "left"
 
-            # Check for top and bottom collisions
-            if self.rect.top <= 20:  # 20 is the height of the top box
-                self.rect.top = 20
-                self.speed_y = abs(self.speed_y)  # Ensure the ball moves downward
-                # Ensure the ball is not moving straight vertically
-                if abs(self.speed_x) < 0.1:  # If horizontal speed is very low
-                    self.speed_x = 0.5 if random.random() < 0.5 else -0.5  # Add a small horizontal component
-            elif self.rect.bottom >= 768 - 20:  # 20 is the height of the bottom box
-                self.rect.bottom = 768 - 20
-                self.speed_y = -abs(self.speed_y)  # Ensure the ball moves upward
-                # Ensure the ball is not moving straight vertically
-                if abs(self.speed_x) < 0.1:  # If horizontal speed is very low
-                    self.speed_x = 0.5 if random.random() < 0.5 else -0.5  # Add a small horizontal component
+        # Check for top and bottom collisions
+        if self.rect.top <= 20:  # 20 is the height of the top box
+            self.rect.top = 20
+            self.speed_y = abs(self.speed_y)  # Ensure the ball moves downward
+            # Ensure the ball is not moving straight vertically
+            if abs(self.speed_x) < 0.1:  # If horizontal speed is very low
+                self.speed_x = 0.5 if random.random() < 0.5 else -0.5  # Add a small horizontal component
+        elif self.rect.bottom >= 768 - 20:  # 20 is the height of the bottom box
+            self.rect.bottom = 768 - 20
+            self.speed_y = -abs(self.speed_y)  # Ensure the ball moves upward
+            # Ensure the ball is not moving straight vertically
+            if abs(self.speed_x) < 0.1:  # If horizontal speed is very low
+                self.speed_x = 0.5 if random.random() < 0.5 else -0.5  # Add a small horizontal component
 
-            for obstacle in self.obstacles:
-                collision_point = self.check_line_collision(obstacle)
-                if collision_point:
-                    self.handle_line_collision(obstacle, collision_point)
-                    self.increase_speed()  # Increase the ball's speed after hitting an obstacle
-                    return None
+        for obstacle in self.obstacles:
+            collision_point = self.check_line_collision(obstacle)
+            if collision_point:
+                self.handle_line_collision(obstacle, collision_point)
+                self.increase_speed()  # Increase the ball's speed after hitting an obstacle
+                return None
 
         if self.rect.left <= 0:
             return "right"
