@@ -1,0 +1,8 @@
+.aider*
+__pycache__/ball.cpython-311.pyc
+__pycache__/colors.cpython-311.pyc
+__pycache__/game.cpython-311.pyc
+__pycache__/obstacle.cpython-311.pyc
+__pycache__/paddle.cpython-311.pyc
+__pycache__/powerup.cpython-311.pyc
+.DS_Store

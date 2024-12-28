@@ -4,6 +4,7 @@ from paddle import Paddle
 from powerup import PowerUp
 from ball import Ball
 from obstacle import Obstacle
+from colors import WHITE_BALL, ORANGE_BALL, PLAYER1_COLOR, PLAYER2_COLOR
 
 class Game:
     def __init__(self, screen):
@@ -16,7 +17,7 @@ class Game:
         self.paddle1 = Paddle(30, 334)  # Centered vertically
         self.paddle2 = Paddle(984, 334)  # Centered vertically
         self.obstacles = self.initialize_obstacles(10)
-        self.balls = [Ball(502, 374, obstacles=self.obstacles)]  # Centered horizontally and vertically
+        self.balls = [Ball(502, 374, obstacles=self.obstacles, color=WHITE_BALL)]  # Centered horizontally and vertically
         self.powerup = PowerUp()
 
     def initialize_obstacles(self, num_obstacles):
@@ -37,6 +38,7 @@ class Game:
         return ccw(A,C,D) != ccw(B,C,D) and ccw(A,B,C) != ccw(A,B,D)
 
     def update(self):
+        """Update game state"""
         keys = pygame.key.get_pressed()
         
         # Move paddles with sub-pixel precision
@@ -66,41 +68,48 @@ class Game:
         for ball in self.balls[:]:  # Use a copy of the list to safely remove balls
             result = ball.move(self.paddle1, self.paddle2, self.obstacles)
             if result == "left" or result == "right":
-                if ball.color == (255, 255, 255):  # White ball
+                # Determine which player scored based on the last paddle to hit the ball
+                scoring_player = ball.last_deflected_by
+                
+                # Calculate score based on ball color
+                if ball.color == WHITE_BALL:
                     score = 10
-                elif ball.color == (255, 165, 0):  # Orange ball
+                elif ball.color == ORANGE_BALL:
                     score = 5
                 else:
-                    score = 1  # Default score for any other color
+                    score = 1
 
-                if result == "left":
-                    self.score2 += score
-                else:
+                # Award points to the correct player
+                if scoring_player == "paddle1":
                     self.score1 += score
+                else:
+                    self.score2 += score
 
-                if ball.color == (255, 255, 255):
-                    print(f"Last deflected by: {ball.last_deflected_by}")
+                # Handle white ball special case
+                if ball.color == WHITE_BALL:
                     self.balls.remove(ball)
                     self.paddle1.rect.height = 100  # Reset paddle1 size to default
                     self.paddle2.rect.height = 100  # Reset paddle2 size to default
                     # Ensure only one white ball exists
-                    if not any(b.color == (255, 255, 255) for b in self.balls):
-                        self.balls.append(Ball(502, 374, obstacles=self.obstacles))  # Re-spawn the ball at the center
+                    if not any(b.color == WHITE_BALL for b in self.balls):
+                        self.balls.append(Ball(502, 374, obstacles=self.obstacles, color=WHITE_BALL))
                     self.timer = 10
                 else:
                     self.balls.remove(ball)
-            else:
-                self.check_powerup_collision(ball)
+
+            # Check for powerup collisions
+            self.check_powerup_collision(ball)
 
     def check_ball_paddle_collisions(self):
         for ball in self.balls:
             ball.check_collision(self.paddle1, self.paddle2)
 
     def check_powerup_collision(self, ball):
-        if ball.rect.colliderect(self.powerup.rect) and ball.color == (255, 255, 255):
-            new_ball = Ball(ball.rect.x, ball.rect.y, obstacles=self.obstacles, color=(255, 165, 0))  # Duck orange
-            new_ball.speed_x = ball.speed_x
-            new_ball.speed_y = random.choice([-4, 4])
+        if ball.rect.colliderect(self.powerup.rect) and ball.color == WHITE_BALL:
+            new_ball = Ball(ball.rect.x, ball.rect.y, obstacles=self.obstacles, color=ORANGE_BALL)  # Duck orange
+            # Copy velocity from the original ball
+            new_ball.velocity = ball.velocity.copy()
+            new_ball.speed = ball.speed
             self.balls.append(new_ball)
             if ball.last_deflected_by == "paddle1":
                 self.score1 += 1
@@ -149,8 +158,8 @@ class Game:
         pygame.draw.rect(self.screen, (255, 255, 255), (0, 0, screen_width, 20))  # Top box
         pygame.draw.rect(self.screen, (255, 255, 255), (0, screen_height - 20, screen_width, 20))  # Bottom box
 
-        self.paddle1.draw(self.screen, base_color=(137, 207, 240))  # Baby blue
-        self.paddle2.draw(self.screen, base_color=(0, 255, 0))  # Bright green
+        self.paddle1.draw(self.screen, base_color=PLAYER1_COLOR)  # Baby blue
+        self.paddle2.draw(self.screen, base_color=PLAYER2_COLOR)  # Bright green
         for ball in self.balls:
             ball.draw(self.screen)
         self.powerup.draw(self.screen)
@@ -159,8 +168,8 @@ class Game:
 
         # Draw the scores without shadow (moved to the end)
         font = pygame.font.Font(None, 74)
-        score1_surface = font.render(str(self.score1), True, (137, 207, 240))  # Baby blue
-        score2_surface = font.render(str(self.score2), True, (0, 255, 0))  # Bright green
+        score1_surface = font.render(str(self.score1), True, PLAYER1_COLOR)  # Baby blue
+        score2_surface = font.render(str(self.score2), True, PLAYER2_COLOR)  # Bright green
 
         screen_width = self.screen.get_width()
         score1_x = (screen_width // 4) - (score1_surface.get_width() // 2)
@@ -173,10 +182,10 @@ class Game:
         font = pygame.font.Font(None, 150)
         if self.score1 >= 100:
             winner_text = "BLUE WINS!"
-            color = (137, 207, 240)  # Baby blue
+            color = PLAYER1_COLOR  # Baby blue
         else:
             winner_text = "GREEN WINS!"
-            color = (0, 255, 0)  # Bright green
+            color = PLAYER2_COLOR  # Bright green
 
         text_surface = font.render(winner_text, True, color)
         text_rect = text_surface.get_rect(center=(self.screen.get_width() // 2, self.screen.get_height() // 2))
@@ -211,12 +220,12 @@ class Game:
         self.paddle1 = Paddle(30, 334)  # Centered vertically
         self.paddle2 = Paddle(984, 334)  # Centered vertically
         self.obstacles = []
-        self.balls = [Ball(502, 374, obstacles=self.obstacles)]  # Centered horizontally and vertically
+        self.balls = [Ball(502, 374, obstacles=self.obstacles, color=WHITE_BALL)]  # Centered horizontally and vertically
         self.powerup = PowerUp()
         # Draw the scores without shadow
         font = pygame.font.Font(None, 74)
-        score1_surface = font.render(str(self.score1), True, (137, 207, 240))  # Baby blue
-        score2_surface = font.render(str(self.score2), True, (0, 255, 0))  # Bright green
+        score1_surface = font.render(str(self.score1), True, PLAYER1_COLOR)  # Baby blue
+        score2_surface = font.render(str(self.score2), True, PLAYER2_COLOR)  # Bright green
 
         screen_width = self.screen.get_width()
         score1_x = (screen_width // 4) - (score1_surface.get_width() // 2)
@@ -252,8 +261,8 @@ class Game:
         self.screen.blit(overlay, (0, 0))
 
 
-        self.paddle1.draw(self.screen, base_color=(137, 207, 240))  # Baby blue
-        self.paddle2.draw(self.screen, base_color=(0, 255, 0))  # Bright green
+        self.paddle1.draw(self.screen, base_color=PLAYER1_COLOR)  # Baby blue
+        self.paddle2.draw(self.screen, base_color=PLAYER2_COLOR)  # Bright green
         for ball in self.balls:
             ball.draw(self.screen)
         self.powerup.draw(self.screen)
